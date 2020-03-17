@@ -55,4 +55,13 @@ class AuthController extends Controller
         return response()->json(compact('user'), 200);
     }
 
+    public function logout()
+    {
+        try {
+            auth('api')->logout();
+            return response()->json(['message'=> 'You have successfully logged out.']);
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Failed to logout, please try again.'], 500);
+        }
+    }
 }
