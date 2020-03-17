@@ -4,13 +4,8 @@ namespace App\Http\Requests;
 
 use App\Traits\Validation\HandleFailedValidation;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
-
-class RegisterUser extends FormRequest
+class LoginUserRequest extends FormRequest
 {
     use HandleFailedValidation;
 
@@ -27,14 +22,13 @@ class RegisterUser extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     *
+     * @return array
      */
     public function rules()
     {
         return [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string|min:6',
         ];
     }
 }
