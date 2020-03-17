@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\RegisterUser;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use JWTAuth;
 use JWTFactory;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
+    public function register(RegisterUser $request)
     {
         $user = User::create([
             'name' => $request->name,
