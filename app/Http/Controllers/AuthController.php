@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
 use App\Http\Requests\RegisterUser;
+use App\Http\Requests\LoginUser;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use JWTAuth;
 use JWTFactory;
@@ -28,7 +28,7 @@ class AuthController extends Controller
         return response()->json(compact('token'));
     }
 
-    public function login(Request $request)
+    public function login(LoginUser $request)
     {
         $credentials = $request->only(['email', 'password']);
 
