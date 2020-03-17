@@ -42,4 +42,17 @@ class AuthController extends Controller
         return response()->json(compact('token'));
     }
 
+    public function getUser()
+    {
+        try {
+            if (!$user = JWTAuth::parseToken()->authenticate()) {
+                return response()->json(['error' => 'User not found'], 404);
+            }
+        }  catch (JWTException $e) {
+            return response()->json(['error' => 'Failed to login, please try again.'], 500);
+        }
+
+        return response()->json(compact('user'), 200);
+    }
+
 }
