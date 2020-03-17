@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateUserRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
+use App\Services\CreateShop;
 
 class ResourceController extends Controller
 {
@@ -42,7 +42,15 @@ class ResourceController extends Controller
     {
         $input = $request->all();
         $user->update($input);
+        $this->checkForCreateShop($user, $request);
 
         return response()->json(['message'=> 'You have successfully updated the user.']);
+    }
+
+    private function checkForCreateShop($user, $request) {
+        if(isset($request->role) && $request->role == 'seller') {
+            $shop = new CreateShop();
+            $shop->store($user);
+        }
     }
 }
