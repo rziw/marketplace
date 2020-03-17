@@ -20,3 +20,7 @@ Route::group(['middleware' => 'auth.role:admin,customer,seller'], function(){
     Route::get('user', 'AuthController@getUser');
     Route::get('logout', 'AuthController@logout');
 });
+
+Route::group(['middleware' => 'auth.role:admin'], function(){
+    Route::resource('users', 'Admin\User\ResourceController');
+});
