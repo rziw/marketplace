@@ -27,8 +27,8 @@ class UpdateShopRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|min:3|max:255',
-            'sheba_number' => 'min:10|max:255|unique:shops',
+            'name' => 'string|min:3|max:255',
+            'sheba_number' => 'min:10|max:255|unique:shops,sheba_number,'.$this->shop->id,
             'address' => 'string|min:5|max:20000'
         ];
     }
