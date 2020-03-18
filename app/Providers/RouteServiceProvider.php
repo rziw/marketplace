@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Product;
+use App\Models\Shop;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
@@ -30,9 +32,20 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-
         parent::boot();
+
+        Route::bind('shop', function ($id) {
+
+            $shop = Shop::where('id', $id);
+
+            if (request()->route()->hasParameter('product')) {
+                $shop->whereHas('products', function ($q) {
+                    $q->where('id', request()->route('product'));
+                });
+            }
+
+            return $shop->firstOrFail();
+        });
     }
 
     /**
