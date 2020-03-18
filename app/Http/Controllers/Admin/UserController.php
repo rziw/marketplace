@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Admin\User;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateUserRequest;
 use App\Models\User;
 use App\Services\CreateShop;
 
-class ResourceController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
