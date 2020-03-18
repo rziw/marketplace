@@ -21,7 +21,11 @@ Route::group(['middleware' => 'auth.role:admin,customer,seller'], function(){
     Route::get('logout', 'AuthController@logout');
 });
 
-Route::group(['middleware' => 'auth.role:admin'], function(){
+Route::group(['prefix' => 'admin', 'middleware' => 'auth.role:admin'], function(){
     Route::resource('users', 'Admin\UserController');
     Route::resource('shops', 'Admin\ShopController');
+});
+
+Route::group(['prefix' => 'seller', 'middleware' => 'auth.role:seller'], function(){
+    Route::resource('shop', 'Seller\ShopController')->middleware('shop.owner');
 });
