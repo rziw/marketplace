@@ -19,6 +19,8 @@ Route::post('login', 'AuthController@login');
 Route::group(['middleware' => 'auth.role:admin,customer,seller'], function(){
     Route::get('user', 'AuthController@getUser');
     Route::get('logout', 'AuthController@logout');
+    Route::put('user/{user}', 'User\UserController@update');
+
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth.role:admin'], function(){
