@@ -23,8 +23,11 @@ class CreateUsersTable extends Migration
             $table->string('home_number')->nullable();
             $table->integer('postal_code')->nullable();
             $table->text('address')->nullable();
+            $table->text('address')->nullable();
             $table->string('role')->default('customer');
-            $table->string('password');
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
+            $table->string('radius')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -19,6 +19,9 @@ class CreateShopsTable extends Migration
             $table->string('sheba_number')->nullable();
             $table->string('product_type')->nullable();
             $table->text('address')->nullable();
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
+            $table->string('radius')->nullable();
             $table->integer('owner_id')->unique();
 
             $table->timestamps();
