@@ -40,7 +40,7 @@ class RouteServiceProvider extends ServiceProvider
 
             if (request()->route()->hasParameter('product')) {
                 $shop->whereHas('products', function ($q) {
-                    $q->where('id', request()->route('product'));
+                    $q->where('products.id', request()->route('product'));
                 });
             }
 
