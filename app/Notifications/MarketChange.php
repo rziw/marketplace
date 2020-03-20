@@ -8,18 +8,18 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Mail;
 
-class MarketAdded extends Notification
+class MarketChange extends Notification
 {
     use Queueable;
-
+    private $message;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($message)
     {
-        //
+        $this->message = $message;
     }
 
     /**
@@ -43,7 +43,7 @@ class MarketAdded extends Notification
     {
         return (new MailMessage)
             ->greeting('Hello!')
-            ->line('You are a seller now and you have your own market in our system!')
+            ->line("$this->message")
             ->line('Thank you for using our site!');
     }
 
