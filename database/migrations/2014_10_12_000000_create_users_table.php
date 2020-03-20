@@ -28,7 +28,7 @@ class CreateUsersTable extends Migration
             $table->string('role')->default('customer');
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
-            $table->string('radius')->nullable();
+            $table->string('radius')->default(5);
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
