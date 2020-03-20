@@ -28,11 +28,11 @@ class StoreProductRequest extends FormRequest
     {
         return [
             'name' => 'required|min:3|max:100',
-            'short_description' => 'min:5',
             'description' => 'required|min:10|max:2000',
             'color' => 'required|min:2|max:255',
             'count' => 'required|integer|min:0',
-            'price' => 'required|integer|min:100'
+            'price' => 'required|integer|min:100',
+            'has_guarantee' => 'boolean',
         ];
     }
 }

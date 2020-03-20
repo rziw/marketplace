@@ -15,6 +15,7 @@ class Shop extends Model
 
     public function products()
     {
-        return $this->belongsToMany('App\Models\Product');
+        return $this->belongsToMany('App\Models\Product')->withPivot(['count', 'price', 'discount', 'color',
+            'has_guarantee', 'guarantee_description']);
     }
 }

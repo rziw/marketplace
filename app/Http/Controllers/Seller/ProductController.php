@@ -31,10 +31,12 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request, $shop)
     {
-        $input = $request->except(['shop_id']);
-        $input['shop_id'] = $shop->id;
+        $product_input = $request->only(['name', 'description', 'tag']);
+        $product_shop_input = $request->only(['count', 'price', 'discount', 'color', 'has_guarantee',
+            'guarantee_description']);
 
-        Product::Create($input);
+        $product = Product::Create($product_input);
+        $shop->products()->attach([$product->id => $product_shop_input]);
 
         return response()->json(['message'=> 'You have successfully created a product.']);
     }
@@ -56,12 +58,17 @@ class ProductController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  Product $product
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Product $product)
     {
-        return 1;
+        $input = $request->except(['shop_id', 'status']);
+        $input['status'] = 'waiting';
+
+        $product->update($input);
+
+        return response()->json(['message'=> 'You have successfully updated the product.']);
     }
 
     /**
