@@ -22,6 +22,9 @@ class CreateProductShopTable extends Migration
             $table->float('rate')->default(0);
             $table->string('discount')->nullable();
             $table->string('color')->nullable();
+            $table->boolean('has_guarantee')->default(1);
+            $table->string('guarantee_description')->nullable();
+            $table->text('extra_description')->nullable();
             $table->string('status')->default('waiting');//statuses are waiting or accepted
 
             $table->timestamps();
