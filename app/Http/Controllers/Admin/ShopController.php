@@ -40,11 +40,14 @@ class ShopController extends Controller
      */
     public function update(UpdateShopRequest $request, Shop $shop)
     {
-        $geoLocation = new GeoLocationHandler($shop, $request);
-
         $input = $request->only(['name', 'sheba_number', 'product_type', 'address', 'province', 'city']);
-        $input['longitude'] = $geoLocation->getLongitude();
-        $input['latitude'] = $geoLocation->getLatitude();
+
+        if(isset($request->address)) {
+            $geoLocation = new GeoLocationHandler($shop, $request);
+
+            $input['longitude'] = $geoLocation->getLongitude();
+            $input['latitude'] = $geoLocation->getLatitude();
+        }
 
         $shop->update($input);
 

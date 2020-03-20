@@ -29,9 +29,9 @@ class UpdateShopRequest extends FormRequest
         return [
             'name' => 'string|min:3|max:255',
             'sheba_number' => 'min:10|max:255|unique:shops,sheba_number,'.$this->shop->id,
-            'address' => 'string|min:5|max:20000',
-            'province' => 'string|min:3|max:60',
             'city' => 'string|min:3|max:60',
+            'address' => 'sometimes|required|string|min:5|max:20000',
+            'province' => 'required_with:address|string|min:3|max:60',
         ];
     }
 }
