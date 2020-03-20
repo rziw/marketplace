@@ -24,8 +24,12 @@ Route::group(['middleware' => 'auth.role:admin,customer,seller'], function(){
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth.role:admin'], function(){
-    Route::resource('users', 'Admin\UserController');
-    Route::resource('shops', 'Admin\ShopController');
+    Route::resource('user', 'Admin\UserController')
+    ->except('index');
+    Route::get('users', 'Admin\UserController@index');
+    Route::resource('shop', 'Admin\ShopController')
+    ->except('index');
+    Route::get('shops', 'Admin\ShopController@index');
 });
 
 Route::group(['prefix' => 'seller', 'middleware' => 'auth.role:seller'], function(){
