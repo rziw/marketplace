@@ -17,22 +17,31 @@ Route::post('register', 'AuthController@register');
 Route::post('login', 'AuthController@login');
 
 Route::group(['middleware' => 'auth.role:admin,customer,seller'], function(){
+
     Route::get('user', 'AuthController@getUser');
+
     Route::get('logout', 'AuthController@logout');
+
+
     Route::put('user/{user}', 'User\UserController@update');
 
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth.role:admin'], function(){
+
     Route::resource('user', 'Admin\UserController')
     ->except('index');
+
     Route::get('users', 'Admin\UserController@index');
+
     Route::resource('shop', 'Admin\ShopController')
     ->except('index');
+
     Route::get('shops', 'Admin\ShopController@index');
 });
 
 Route::group(['prefix' => 'seller', 'middleware' => 'auth.role:seller'], function(){
+
     Route::resource('shop', 'Seller\ShopController')
         ->middleware('shop.owner');
 
