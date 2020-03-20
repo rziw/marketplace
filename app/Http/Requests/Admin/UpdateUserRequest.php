@@ -31,7 +31,9 @@ class UpdateUserRequest extends FormRequest
             'family'  => 'nullable|string|min:3|max:255',
             'mobile_number' => 'nullable|string|min:11|max:12',
             'home_number' => 'nullable|string|min:4|max:50',
-            'address' => 'nullable|string|min:5|max:20000',
+            'address' => 'sometimes|required|string|min:5|max:20000',
+            'province' => 'required_with:address',
+            'radius' => 'sometimes|required',
             'role' => 'sometimes|required|in:admin,customer,seller',
         ];
     }

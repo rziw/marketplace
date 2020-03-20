@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateUserRequest;
 use App\Models\User;
 use App\Services\CreateShop;
+use App\Services\GeoLocationHandler;
 
 class UserController extends Controller
 {
@@ -41,6 +42,14 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         $input = $request->all();
+
+        if(isset($request->address)) {
+            $geoLocation = new GeoLocationHandler($user, $request);
+
+            $input['longitude'] = $geoLocation->getLongitude();
+            $input['latitude'] = $geoLocation->getLatitude();
+        }
+
         $user->update($input);
         $this->checkForCreateShop($user, $request);
 
