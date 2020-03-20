@@ -10,7 +10,7 @@ class Product extends Model
 
     public function shops()
     {
-        return $this->belongsToMany('App\Models\Shop')->withPivot(['count', 'price', 'discount', 'color',
-            'has_guarantee', 'guarantee_description']);
+        return $this->belongsToMany('App\Models\Shop')->withPivot(['product_id', 'shop_id', 'count', 'price',
+            'discount', 'color', 'has_guarantee', 'guarantee_description']);
     }
 }

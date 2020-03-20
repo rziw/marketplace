@@ -5,7 +5,7 @@ namespace App\Http\Requests\Seller;
 use App\Traits\Validation\HandleFailedValidation;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreProductRequest extends FormRequest
+class ProductRequest extends FormRequest
 {
     use HandleFailedValidation;
 
@@ -32,7 +32,8 @@ class StoreProductRequest extends FormRequest
             'color' => 'required|min:2|max:255',
             'count' => 'required|integer|min:0',
             'price' => 'required|integer|min:100',
-            'has_guarantee' => 'boolean',
+            'has_guarantee' => 'sometimes|required|boolean',
+            'guarantee_description' => 'required_if:has_guarantee,1',
         ];
     }
 }

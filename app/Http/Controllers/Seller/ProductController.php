@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Seller\StoreProductRequest;
+use App\Http\Requests\Seller\ProductRequest;
 use App\Models\Product;
 use App\Models\Shop;
-use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -26,10 +25,10 @@ class ProductController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Shop $shop
-     * @param  \Illuminate\Http\Request  $request
+     * @param  ProductRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(StoreProductRequest $request, $shop)
+    public function store(ProductRequest $request, $shop)
     {
         $product_input = $request->only(['name', 'description', 'tag']);
         $product_shop_input = $request->only(['count', 'price', 'discount', 'color', 'has_guarantee',
@@ -57,16 +56,20 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  ProductRequest  $request
      * @param  Product $product
+     * @param  Shop $shop
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Product $product)
+    public function update(ProductRequest $request,Shop $shop, Product $product)
     {
-        $input = $request->except(['shop_id', 'status']);
-        $input['status'] = 'waiting';
+        $product_input = $request->only(['name', 'description', 'tag']);
+        $product_shop_input = $request->only(['count', 'price', 'discount', 'color', 'has_guarantee',
+            'guarantee_description']);
+        $product_shop_input['status'] = 'waiting';
 
-        $product->update($input);
+        $product->update($product_input);
+        $shop->products()->updateExistingPivot($product, $product_shop_input);
 
         return response()->json(['message'=> 'You have successfully updated the product.']);
     }
