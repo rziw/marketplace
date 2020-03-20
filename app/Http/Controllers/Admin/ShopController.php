@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateShopRequest;
 use App\Models\Shop;
+use App\Services\GeoLocationHandler;
 
 class ShopController extends Controller
 {
@@ -39,7 +40,12 @@ class ShopController extends Controller
      */
     public function update(UpdateShopRequest $request, Shop $shop)
     {
-        $input = $request->only(['name', 'sheba_number', 'product_type', 'address']);
+        $geoLocation = new GeoLocationHandler($shop, $request);
+
+        $input = $request->only(['name', 'sheba_number', 'product_type', 'address', 'province', 'city']);
+        $input['longitude'] = $geoLocation->getLongitude();
+        $input['latitude'] = $geoLocation->getLatitude();
+
         $shop->update($input);
 
         return response()->json(['message'=> 'You have successfully updated the shop.']);

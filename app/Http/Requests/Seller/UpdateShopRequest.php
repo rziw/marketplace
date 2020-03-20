@@ -31,6 +31,8 @@ class UpdateShopRequest extends FormRequest
             'sheba_number' => 'required|min:10|max:255|unique:shops,sheba_number,'.$this->shop->id,
             'address' => 'required|string|min:5|max:20000',
             'product_type' => 'required|string|min:3|max:255',
+            'province' => 'required|string|min:3|max:60',
+            'city' => 'required|string|min:3|max:60',
         ];
     }
 }
