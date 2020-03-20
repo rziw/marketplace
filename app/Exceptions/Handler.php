@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
@@ -53,6 +54,10 @@ class Handler extends ExceptionHandler
     {
         if ($exception instanceof ModelNotFoundException) {
             return response()->json(['error' => 'Not Found!'], 404);
+        }
+
+        if ($exception instanceof GuzzleException) {
+            return response()->json(['error' => $exception->getMessage()], $exception->getCode());
         }
 
         return parent::render($request, $exception);
