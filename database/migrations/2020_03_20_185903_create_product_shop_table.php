@@ -22,7 +22,7 @@ class CreateProductShopTable extends Migration
             $table->float('rate')->default(0);
             $table->string('discount')->nullable();
             $table->string('color')->nullable();
-            $table->string('status')->nullable();
+            $table->string('status')->default('waiting');//statuses are waiting or accepted
 
             $table->timestamps();
         });
