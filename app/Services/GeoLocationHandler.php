@@ -8,17 +8,17 @@ use GuzzleHttp\Client;
 
 class GeoLocationHandler
 {
-    private $longtitude;
+    private $longitude;
     private $latitude;
 
     public function __construct($resource, $request)
     {
         if ($resource->address != $request->address) {
-            $cordinates = $this->getLocation($resource, $request);
-            $this->setLongtitude($cordinates[0]);
-            $this->setLatitude($cordinates[1]);
+            $coordinates = $this->getLocation($request);
+            $this->setLongitude($coordinates[0]);
+            $this->setLatitude($coordinates[1]);
         } else {
-            $this->setLongtitude($resource->longtitude);
+            $this->setLongitude($resource->longitude);
             $this->setLatitude($resource->latitude);
         }
     }
@@ -32,11 +32,11 @@ class GeoLocationHandler
     }
 
     /**
-     * @param mixed $longtitude
+     * @param mixed $longitude
      */
-    private function setLongtitude($longtitude): void
+    private function setLongitude($longitude): void
     {
-        $this->longtitude = $longtitude;
+        $this->longitude = $longitude;
     }
 
     /**
@@ -52,7 +52,7 @@ class GeoLocationHandler
      */
     public function getLongitude()
     {
-        return $this->longtitude;
+        return $this->longitude;
     }
 
     public function getLocation($request)
