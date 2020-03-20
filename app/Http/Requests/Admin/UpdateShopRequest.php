@@ -32,6 +32,7 @@ class UpdateShopRequest extends FormRequest
             'city' => 'string|min:3|max:60',
             'address' => 'sometimes|required|string|min:5|max:20000',
             'province' => 'required_with:address|string|min:3|max:60',
+            'status' => 'in:waiting,accepted'
         ];
     }
 }

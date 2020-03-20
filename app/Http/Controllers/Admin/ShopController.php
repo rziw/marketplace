@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateShopRequest;
 use App\Models\Shop;
+use App\Notifications\MarketChange;
 use App\Services\GeoLocationHandler;
+use Illuminate\Support\Facades\Mail;
 
 class ShopController extends Controller
 {
@@ -40,7 +42,7 @@ class ShopController extends Controller
      */
     public function update(UpdateShopRequest $request, Shop $shop)
     {
-        $input = $request->only(['name', 'sheba_number', 'product_type', 'address', 'province', 'city']);
+        $input = $request->only(['name', 'sheba_number', 'product_type', 'address', 'province', 'city', 'status']);
 
         if(isset($request->address)) {
             $geoLocation = new GeoLocationHandler($shop, $request);
@@ -49,8 +51,18 @@ class ShopController extends Controller
             $input['latitude'] = $geoLocation->getLatitude();
         }
 
+        $this->checkForNotifyUser($shop, $request);
         $shop->update($input);
 
         return response()->json(['message'=> 'You have successfully updated the shop.']);
+    }
+
+    private function checkForNotifyUser(Shop $shop, $request)
+    {
+        if(isset($request->status) && $request->status == 'accepted' && $shop->status != 'accepted') {
+            Mail::fake();//Mock sending email unless all requirements of sending email are OK
+            $message = 'status of shop updated to accepted.';
+            $shop->user->notify(new MarketChange($message));
+        }
     }
 }
