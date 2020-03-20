@@ -8,8 +8,8 @@ class Product extends Model
 {
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
-    public function shop()
+    public function shops()
     {
-        return $this->belongsTo('App\Models\Shop');
+        return $this->belongsToMany('App\Models\Shop');
     }
 }

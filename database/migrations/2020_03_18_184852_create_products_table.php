@@ -19,15 +19,7 @@ class CreateProductsTable extends Migration
             $table->string('short_description')->nullable();
             $table->text('description')->nullable();
             $table->string('main_image')->nullable();
-            $table->string('status')->nullable();
             $table->text('tag')->nullable();
-            $table->boolean('hide')->default(0);
-            $table->integer('count')->default(0);
-            $table->float('vote')->default(0);
-            $table->integer('price');
-            $table->string('discount')->nullable();
-            $table->string('color')->nullable();
-            $table->integer('shop_id')->unsigned();
             $table->timestamps();
         });
     }
