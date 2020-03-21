@@ -38,6 +38,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.role:admin'], function(
     ->except('index');
 
     Route::get('shops', 'Admin\ShopController@index');
+
+    Route::resource('shop/{shop}/product', 'Admin\Product\ProductController')
+        ->except('index');
+
+    Route::get('shop/{shop}/products', 'Admin\Product\ProductController@index');
+
+    Route::get('products/name/{name}/search', 'Admin\Product\ProductSearchController');
+
 });
 
 Route::group(['prefix' => 'seller', 'middleware' => 'auth.role:seller'], function(){
