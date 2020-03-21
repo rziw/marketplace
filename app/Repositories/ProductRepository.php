@@ -5,24 +5,19 @@ namespace App\Repositories;
 
 
 use App\Models\Product;
-use App\Models\Shop;
 use Illuminate\Support\Facades\DB;
 
 class ProductRepository
 {
     public function listClosest($lat, $lng, $radius)
     {
-        $shops = Shop::select(DB::raw('id,  ( 6367 * acos( cos( radians('.$lat.') ) * cos( radians( latitude ) ) *
-         cos( radians( longitude ) - radians('.$lng.') ) + sin( radians('.$lat.') ) * sin( radians( latitude ) ) ) )
-         AS distance'))
-            ->where('status', 'accepted')
-            ->having('distance', '<', $radius)
-            ->get();
-
-        $products = Product::whereHas('shops', function($q) use($shops) {
-                $q->where('product_shop.status', 'accepted');
-                $q->whereIn('shops.id', $shops->pluck('id')->all());
-            })
+        $products = Product::whereHas('shops', function ($q) use ($lat, $lng, $radius) {
+            $q->where('product_shop.status', 'accepted');
+            $q->whereRaw('6367 * acos( cos( radians(' . $lat . ') ) * cos( radians( latitude ) ) *
+             cos( radians( longitude ) - radians(' . $lng . ') ) + sin( radians(' . $lat . ') ) *
+              sin( radians( latitude ) ) ) < ' . $radius . '');
+            $q->where('shops.status', 'accepted');
+        })
             ->with('shops')
             ->get();
 
@@ -32,9 +27,9 @@ class ProductRepository
     public function list()
     {
         $products = Product::select(DB::raw('*'))
-            ->whereHas('shops', function($q) {
+            ->whereHas('shops', function ($q) {
                 $q->where('product_shop.status', 'accepted');
-            }) ->with('shops')
+            })->with('shops')
             ->get();
 
         return $products;
