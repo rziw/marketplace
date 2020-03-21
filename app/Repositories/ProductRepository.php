@@ -8,7 +8,7 @@ use App\Models\Product;
 use App\Models\Shop;
 use Illuminate\Support\Facades\DB;
 
-class ShopRepository
+class ProductRepository
 {
     public function listClosest($lat, $lng, $radius)
     {

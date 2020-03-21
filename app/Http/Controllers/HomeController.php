@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\ShopRepository;
+use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -13,10 +13,10 @@ class HomeController extends Controller
      * Display a listing of the resource.
      *
      * @param  Request $request
-     * @param ShopRepository $shopRepository
+     * @param ProductRepository $shopRepository
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(Request $request, ShopRepository $shopRepository)
+    public function index(Request $request, ProductRepository $shopRepository)
     {
         try {
             $user = JWTAuth::parseToken()->authenticate();
