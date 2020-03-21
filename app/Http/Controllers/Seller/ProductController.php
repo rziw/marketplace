@@ -17,7 +17,7 @@ class ProductController extends Controller
      */
     public function index($shop)
     {
-        $products = Product::where('shop_id', $shop->id)->get();
+        $products = $shop->products;
         return response()->json(compact('products'));
     }
 
@@ -78,12 +78,15 @@ class ProductController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Shop $shop
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function destroy($shop, Product $product)
     {
         $product->delete();
+        $shop->products()->detach($product);
+
         return response()->json(['message'=> 'You have successfully deleted the product.']);
     }
 }
