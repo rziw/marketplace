@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateShopRequest;
 use App\Models\Shop;
-use App\Notifications\MarketChange;
+use App\Notifications\MarketChanged;
 use App\Services\GeoLocationHandler;
 use Illuminate\Support\Facades\Mail;
 
@@ -59,10 +59,10 @@ class ShopController extends Controller
 
     private function checkForNotifyUser(Shop $shop, $request)
     {
-        if(isset($request->status) && $request->status == 'accepted' && $shop->status != 'accepted') {
+        if(isset($request->status) && $shop->status != $request->status) {
             Mail::fake();//Mock sending email unless all requirements of sending email are OK
-            $message = 'status of shop updated to accepted.';
-            $shop->user->notify(new MarketChange($message));
+            $message = "status of shop updated to $request->status.";
+            $shop->user->notify(new MarketChanged($message));
         }
     }
 }
