@@ -15,13 +15,14 @@ use Illuminate\Support\Facades\Route;
 */
 Route::post('register', 'AuthController@register');
 Route::post('login', 'AuthController@login');
+Route::get('home', 'HomeController@index');
+
 
 Route::group(['middleware' => 'auth.role:admin,customer,seller'], function(){
 
     Route::get('user', 'AuthController@getUser');
 
     Route::get('logout', 'AuthController@logout');
-
 
     Route::put('user/{user}', 'User\UserController@update');
 
@@ -45,6 +46,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth.role:admin'], function(
     Route::get('shop/{shop}/products', 'Admin\Product\ProductController@index');
 
     Route::get('products/name/{name}/search', 'Admin\Product\ProductSearchController');
+
+    Route::post('shop/{shop}/product/{product}/duplicate', 'Admin\Product\ProductDuplicateController');
 
 });
 
