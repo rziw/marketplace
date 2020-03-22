@@ -12,6 +12,13 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
+    private $user;
+
+    public function __construct()
+    {
+        $this->user = JWTAuth::parseToken()->authenticate();
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -20,10 +27,8 @@ class CartController extends Controller
      */
     public function store(CartRequest $request)
     {
-        $user = JWTAuth::parseToken()->authenticate();
-
-        $order_products_input = $request->only(['product_id', 'shop_id', 'price', 'count']);
-        $order_input['user_id'] = $user->id;
+        $order_products_input = $request->only(['product_id', 'shop_id', 'count', 'product_name']);
+        $order_input['user_id'] = $this->user->id;
         $order_input['status'] = 'waiting';
         $order_products_input['price'] = 5000;
 
@@ -58,11 +63,14 @@ class CartController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
-        //
+        $cart = Order::whereId($id)->where('user_id', $this->user->id)->with('orderproducts')
+            ->where('status', 'waiting')->firstOrFail();
+
+        return response()->json(compact('cart'));
     }
 
     /**
@@ -73,6 +81,6 @@ class CartController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //will be implemented in future
     }
 }
