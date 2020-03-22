@@ -51,14 +51,14 @@ class ProductController extends Controller
 
         $product->update($product_input);
         $shop->products()->updateExistingPivot($product, $product_shop_input);
-        $this->checkForNotifyUser($shop, $product, $request);
+        $this->checkForNotifyUser($shop, $shop->products($product->id)->first(), $request);
 
         return response()->json(['message'=> 'You have successfully updated the product.']);
     }
 
     private function checkForNotifyUser(Shop $shop, Product $product, UpdateProductRequest $request)
     {
-        if(isset($request->status) && $product->status != $request->status) {
+        if(isset($request->status) && $product->pivot->status != $request->status) {
             Mail::fake();//Mock sending email unless all requirements of sending email are OK
             $message = "status of shop updated to $request->status.";
             $shop->user->notify(new ProductChanged($message));
