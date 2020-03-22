@@ -17,6 +17,7 @@ class CreateOrderProductsTable extends Migration
             $table->id();
             $table->integer('order_id')->unsigned();
             $table->integer('product_id')->unsigned();
+            $table->string('product_name');
             $table->integer('seller_id')->unsigned();
             $table->integer('count')->unsigned();
             $table->integer('price')->unsigned();
