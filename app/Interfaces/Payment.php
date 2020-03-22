@@ -1,7 +1,7 @@
 <?php
 namespace App\Interfaces;
 
-interface payment
+interface Payment
 {
     public function pay($request);
 }

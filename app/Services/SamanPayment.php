@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use App\Interfaces\payment;
+use App\Interfaces\Payment;
 
-class SamanPayment implements payment
+class SamanPayment implements Payment
 {
 
     public function pay($request)

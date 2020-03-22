@@ -1,9 +1,9 @@
 <?php
 namespace App\Services;
 
-use App\Interfaces\payment;
+use App\Interfaces\Payment;
 
-class MellatPayment implements payment
+class MellatPayment implements Payment
 {
 
     public function pay($request)
