@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\OrderStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,8 +16,8 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id')->unsigned();
-            $table->string('status')->default(OrderStatus::waiting);
-            $table->string('shipping_way');
+            $table->string('status');//
+            $table->string('shipping_way');//
             $table->timestamps();
         });
     }
