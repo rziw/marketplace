@@ -11,7 +11,7 @@ class MellatPayment implements payment
         $response = array(
             '‫‪State‬‬'         => 'Fail',
             '‫‪StateCode‬‬'     => 500,
-            'description'   => "Server is down LOL",
+            'message'   => "Server is down LOL",
             '‫‪MID‬‬'           => 12345,
             '‫‪RefNum‬‬'        => 'dgw456',
             '‫‪TRACENO‬‬'       => '23434kljkl'

@@ -12,7 +12,7 @@ class SamanPayment implements payment
         $response = array(
             '‫‪State‬‬'         => 'Success',
             '‫‪StateCode‬‬'     => 200,
-            'description'   => "everyThing's Ok , paid successfully",
+            'message'   => "everyThing's Ok , paid successfully",
             '‫‪MID‬‬'           => 12345,
             '‫‪RefNum‬‬'        => 'dgw456',
             '‫‪TRACENO‬‬'       => 'dfjntg8954'
