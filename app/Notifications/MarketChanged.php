@@ -8,7 +8,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Mail;
 
-class MarketChange extends Notification
+class MarketChanged extends Notification
 {
     use Queueable;
     private $message;
