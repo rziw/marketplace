@@ -18,7 +18,7 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->integer('user_id')->unsigned();
             $table->string('status')->default(OrderStatus::waiting);
-            $table->string('shipping_way');//
+            $table->string('shipping_way')->nullable();
             $table->timestamps();
         });
     }

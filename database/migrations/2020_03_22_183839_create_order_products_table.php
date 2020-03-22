@@ -21,7 +21,7 @@ class CreateOrderProductsTable extends Migration
             $table->integer('count')->unsigned();
             $table->integer('price')->unsigned();
             $table->integer('discount')->nullable();
-            $table->integer('description')->unsigned();
+            $table->integer('description')->nullable();
 
             $table->timestamps();
         });
