@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Services;
+namespace App\Helpers;
 
 
 use App\Models\Shop;
