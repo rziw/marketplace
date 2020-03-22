@@ -7,3 +7,4 @@ Route::post('register', 'AuthController@register');
 Route::post('login', 'AuthController@login');
 Route::get('/', 'HomeController@index');
 Route::get('product/{product}', 'ShowProductController@show');
+Route::get('seller/{seller}', 'ShowSellerController@show');
