@@ -91,18 +91,18 @@ class RouteServiceProvider extends ServiceProvider
              ->group(base_path('routes/api/api.php'));
 
         Route::prefix('api')
-            ->middleware('auth.role:admin,customer,seller')
+            ->middleware(['auth.role:admin,customer,seller', 'api'])
             ->namespace($this->namespace)
             ->group(base_path('routes/api/user.php'));
 
 
         Route::prefix('api/seller')
-            ->middleware('auth.role:seller')
+            ->middleware(['auth.role:seller', 'api'])
             ->namespace($this->namespace.'\Seller')
             ->group(base_path('routes/api/seller.php'));
 
         Route::prefix('api/admin')
-            ->middleware('auth.role:admin')
+            ->middleware(['auth.role:admin', 'api'])
             ->namespace($this->namespace.'\Admin')
             ->group(base_path('routes/api/admin.php'));
     }
