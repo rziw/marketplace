@@ -29,6 +29,7 @@ class ProductRepository
         $products = Product::select(DB::raw('*'))
             ->whereHas('shops', function ($q) {
                 $q->where('product_shop.status', 'accepted');
+                $q->where('shops.status', 'accepted');
             })->with('shops')
             ->get();
 
