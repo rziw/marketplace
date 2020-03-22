@@ -17,6 +17,7 @@ class CartController extends Controller
     public function __construct()
     {
         $this->user = JWTAuth::parseToken()->authenticate();
+        $this->middleware('product.countt', ['only' => ['store']]);
     }
 
     /**
@@ -81,6 +82,6 @@ class CartController extends Controller
      */
     public function destroy($id)
     {
-        //will be implemented in future
+        //TODO implement it as soon as possible
     }
 }

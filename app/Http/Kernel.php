@@ -64,5 +64,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'auth.role' => \App\Http\Middleware\JwtAuthorization::class,
         'shop.owner' => \App\Http\Middleware\CheckShopOwner::class,
+        'product.count' => \App\Http\Middleware\CheckProductCount::class,
     ];
 }
