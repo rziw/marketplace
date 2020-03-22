@@ -1,7 +1,7 @@
 <?php
 namespace App\Interfaces;
 
-interface repository
+interface Repository
 {
     public function get($id);
     public function list();

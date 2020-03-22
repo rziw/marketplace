@@ -4,10 +4,10 @@
 namespace App\Repositories;
 
 
-use App\Interfaces\repository;
+use App\Interfaces\Repository;
 use App\Models\Shop;
 
-class SellerRepository implements repository
+class SellerRepository implements Repository
 {
     public function getClosest($id, $lat, $lng, $radius)
     {

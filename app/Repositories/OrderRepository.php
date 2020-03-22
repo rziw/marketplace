@@ -4,11 +4,11 @@
 namespace App\Repositories;
 
 
-use App\Interfaces\repository;
+use App\Interfaces\Repository;
 use App\Models\Order;
 use JWTAuth;
 
-class OrderRepository implements repository
+class OrderRepository implements Repository
 {
     private $user;
 
