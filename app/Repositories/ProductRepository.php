@@ -4,10 +4,11 @@
 namespace App\Repositories;
 
 
+use App\Interfaces\repository;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 
-class ProductRepository
+class ProductRepository implements repository
 {
     public function listClosest($lat, $lng, $radius)
     {

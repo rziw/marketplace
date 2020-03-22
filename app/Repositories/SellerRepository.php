@@ -4,9 +4,10 @@
 namespace App\Repositories;
 
 
+use App\Interfaces\repository;
 use App\Models\Shop;
 
-class SellerRepository
+class SellerRepository implements repository
 {
     public function getClosest($id, $lat, $lng, $radius)
     {
@@ -31,5 +32,10 @@ class SellerRepository
             }])->firstOrFail();
 
         return $shop;
+    }
+
+    public function list()
+    {
+        // TODO: Implement list() method.
     }
 }
