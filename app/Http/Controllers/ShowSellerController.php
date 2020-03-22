@@ -42,11 +42,11 @@ class ShowSellerController extends Controller
             && $this->request->has('lng') && !is_null($this->request->lng)
             && $this->request->has('radius') && !is_null($this->request->radius)) {
 
-            $products = $this->sellerRepository->showClosest($id, $this->request->lat, $this->request->lng,
+            $products = $this->sellerRepository->getClosest($id, $this->request->lat, $this->request->lng,
                 $this->request->radius);
 
         } else {
-            $products = $this->sellerRepository->show($id);
+            $products = $this->sellerRepository->get($id);
         }
 
         return $products;
@@ -56,7 +56,7 @@ class ShowSellerController extends Controller
     {
         if (!is_null($user->latitude) && !is_null($user->longitude)) {
 
-            $products = $this->sellerRepository->showClosest($id, $user->latitude, $user->longitude,
+            $products = $this->sellerRepository->getClosest($id, $user->latitude, $user->longitude,
                 $user->radius);
 
         } elseif ($this->request->has('lat') && !is_null($this->request->lat)
@@ -64,11 +64,11 @@ class ShowSellerController extends Controller
             && $this->request->has('radius') && !is_null($this->request->radius)
         ) {
 
-            $products = $this->sellerRepository->showClosest($id, $this->request->lat, $this->request->lng,
+            $products = $this->sellerRepository->getClosest($id, $this->request->lat, $this->request->lng,
                 $this->request->radius);
 
         } else {
-            $products = $this->sellerRepository->show($id);
+            $products = $this->sellerRepository->get($id);
         }
 
         return $products;

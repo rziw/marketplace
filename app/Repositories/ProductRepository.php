@@ -36,7 +36,7 @@ class ProductRepository
         return $products;
     }
 
-    public function showClosest($id, $lat, $lng, $radius)
+    public function getClosest($id, $lat, $lng, $radius)
     {
         $product = Product::where('id', $id)->whereHas('shops', function($q) use ($lat, $lng, $radius) {
             $q->whereRaw('6367 * acos( cos( radians(' . $lat . ') ) * cos( radians( latitude ) ) *
@@ -50,7 +50,7 @@ class ProductRepository
         return $product;
     }
 
-    public function show($id)
+    public function get($id)
     {
         $product = Product::where('id', $id)->whereHas('shops', function($q) {
             $q->where('product_shop.status', 'accepted');

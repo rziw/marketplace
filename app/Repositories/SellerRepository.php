@@ -8,7 +8,7 @@ use App\Models\Shop;
 
 class SellerRepository
 {
-    public function showClosest($id, $lat, $lng, $radius)
+    public function getClosest($id, $lat, $lng, $radius)
     {
         $shop = Shop::where('id', $id)
             ->where('status', 'accepted')
@@ -22,7 +22,7 @@ class SellerRepository
         return $shop;
     }
 
-    public function show($id)
+    public function get($id)
     {
         $shop = Shop::where('id', $id)
             ->where('status', 'accepted')

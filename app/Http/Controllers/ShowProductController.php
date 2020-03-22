@@ -42,11 +42,11 @@ class ShowProductController extends Controller
             && $this->request->has('lng') && !is_null($this->request->lng)
             && $this->request->has('radius') && !is_null($this->request->radius)) {
 
-            $products = $this->productRepository->showClosest($id, $this->request->lat, $this->request->lng,
+            $products = $this->productRepository->getClosest($id, $this->request->lat, $this->request->lng,
                 $this->request->radius);
 
         } else {
-            $products = $this->productRepository->show($id);
+            $products = $this->productRepository->get($id);
         }
 
         return $products;
@@ -56,7 +56,7 @@ class ShowProductController extends Controller
     {
         if (!is_null($user->latitude) && !is_null($user->longitude)) {
 
-            $products = $this->productRepository->showClosest($id, $user->latitude, $user->longitude,
+            $products = $this->productRepository->getClosest($id, $user->latitude, $user->longitude,
                 $user->radius);
 
         } elseif ($this->request->has('lat') && !is_null($this->request->lat)
@@ -64,11 +64,11 @@ class ShowProductController extends Controller
             && $this->request->has('radius') && !is_null($this->request->radius)
         ) {
 
-            $products = $this->productRepository->showClosest($id, $this->request->lat, $this->request->lng,
+            $products = $this->productRepository->getClosest($id, $this->request->lat, $this->request->lng,
                 $this->request->radius);
 
         } else {
-            $products = $this->productRepository->show($id);
+            $products = $this->productRepository->get($id);
         }
 
         return $products;
