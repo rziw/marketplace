@@ -11,7 +11,7 @@ class SamanPayment implements Payment
     {
         $response = [
             'State'         => 'Success',
-            'StateCode‬'     => '200',
+            'StateCode'     =>  200,
             'message'       => "everyThing's Ok , paid successfully",
             'MID'           => '12345',
             'RefNum'        => 'dgw456',

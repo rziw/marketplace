@@ -10,7 +10,7 @@ class MellatPayment implements Payment
     {
         $response = [
             'State'         => 'Fail',
-            'StateCode‬'     => '500',
+            'StateCode'     =>  500,
             'message'       => "Server is down LOL",
             'MID'           => '12345',
             'RefNum'        => 'dgw456',
