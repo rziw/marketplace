@@ -23,6 +23,7 @@ class CreateOrderProductsTable extends Migration
             $table->integer('price')->unsigned();
             $table->integer('discount')->nullable();
             $table->integer('description')->nullable();
+            $table->integer('status')->nullable();//null or deleted
 
             $table->timestamps();
         });
