@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         'shop.owner' => \App\Http\Middleware\CheckShopOwner::class,
         'product.count' => \App\Http\Middleware\CheckProductCount::class,
         'check.address' => \App\Http\Middleware\CheckUserAddress::class,
+        'deleted.products' => \App\Http\Middleware\CheckDeletedProduct::class,
     ];
 }
