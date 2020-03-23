@@ -8,5 +8,6 @@ Route::get('logout', 'AuthController@logout');
 Route::put('user/{user}', 'User\UserController@update');
 Route::resource('cart', 'User\CartController')
     ->except('index');
-Route::post('payment', 'User\PaymentController@payOrder');
+Route::post('payment', 'User\PaymentController@payOrder')
+    ->middleware('check.address');
 
