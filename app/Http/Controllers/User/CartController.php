@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Helpers\HandleOrder;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\CartRequest;
 use App\Models\Order;
@@ -66,12 +67,22 @@ class CartController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id)
+    public function show($id, HandleOrder $handleOrder)
     {
         $cart = Order::whereId($id)->where('user_id', $this->user->id)->with('orderproducts')
             ->where('status', 'waiting')->firstOrFail();
 
-        return response()->json(compact('cart'));
+        $message = $handleOrder->permanentlyRemoveOrderProduct($cart);
+        $available_products = $cart->orderproducts()->whereNull('status')->get();
+
+        if($available_products->count() < 1) {
+            return response()->json([
+                'error'=> 'the cart is empty',
+                'message' => $message
+            ]);
+        }
+
+        return response()->json(compact('cart', 'message'));
     }
 
     /**
