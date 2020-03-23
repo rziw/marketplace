@@ -32,4 +32,14 @@ class OrderRepository implements Repository
     {
         // TODO: Implement list() method.
     }
+
+    public function listWithProductId($product_id)
+    {
+        $orders = Order::where('status', 'waiting')
+            ->whereHas('orderproducts', function ($q) use($product_id) {
+                $q->where('order_products.product_id', $product_id);
+            })->get();
+
+        return $orders;
+    }
 }
