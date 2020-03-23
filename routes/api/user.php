@@ -9,5 +9,5 @@ Route::put('user/{user}', 'User\UserController@update');
 Route::resource('cart', 'User\CartController')
     ->except('index');
 Route::post('payment', 'User\PaymentController@payOrder')
-    ->middleware('check.address');
+    ->middleware(['check.address', 'product.count', 'deleted.products']);
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Helpers\HandleOrder;
+use App\Helpers\updateProductQuantity;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\PaymentRequest;
 use App\Models\Payment;
@@ -17,6 +18,7 @@ class PaymentController extends Controller
     private $mellatGateway;
     private $orderHandler;
     private $orderRepository;
+    private $updateProductQuantity;
 
     public function __construct()
     {
@@ -24,6 +26,7 @@ class PaymentController extends Controller
         $this->mellatGateway = new MellatPayment();
         $this->orderHandler = new HandleOrder();
         $this->orderRepository = new OrderRepository();
+        $this->updateProductQuantity = new updateProductQuantity();
     }
 
     /**
@@ -39,12 +42,16 @@ class PaymentController extends Controller
         $payment = ($request->gateway == 'saman') ? $this->samanGateway:
             $this->mellatGateway;
 
+        $request->amount = $this->orderHandler->calculateOrderPrice($order);
+
         $pay_result = json_decode($payment->pay($request), true);
+
         $this->storePayment($pay_result, $request, $order);
 
         if($pay_result['StateCode'] == 200) {
-            //update count of product and handle it's result
+
             $this->orderHandler->updateOrderStatus($order, 'paid');
+            $this->updateProductQuantity->updateQuantity($order);
             return response()->json(['message' => 'you successfully paid the order']);
 
         }
@@ -57,7 +64,7 @@ class PaymentController extends Controller
         $input = $request->only(['order_id', 'gateway']);
         $input['status'] = $pay_result['State'];
         $input['tracking_code'] = $pay_result['TRACENO'];
-        $input['price'] = $this->orderHandler->calculateOrderPrice($order);
+        $input['price'] = $request->amount;
 
         Payment::create($input);
     }
