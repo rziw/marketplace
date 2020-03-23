@@ -3,12 +3,11 @@
 namespace App\Listeners;
 
 use App\Events\ProductFinished;
-use App\Models\Order;
 use App\Repositories\OrderRepository;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class UpdateCarts
+class UpdateCarts implements ShouldQueue
 {
     private $orderRepository;
     /**
