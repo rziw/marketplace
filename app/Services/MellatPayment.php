@@ -8,15 +8,15 @@ class MellatPayment implements Payment
 
     public function pay($request)
     {
-        $response = array(
-            '‫‪State‬‬'         => 'Fail',
-            '‫‪StateCode‬‬'     => 500,
-            'message'   => "Server is down LOL",
-            '‫‪MID‬‬'           => 12345,
-            '‫‪RefNum‬‬'        => 'dgw456',
-            '‫‪TRACENO‬‬'       => '23434kljkl'
-        );
+        $response = [
+            'State'         => 'Fail',
+            'StateCode‬'     => '500',
+            'message'       => "Server is down LOL",
+            'MID'           => '12345',
+            'RefNum'        => 'dgw456',
+            'TRACENO'       => 'dfjntg8954',
+        ];
 
-        return response()->json(compact('response'));
+        return json_encode($response);
     }
 }
