@@ -22,6 +22,7 @@ class OrderRepository implements Repository
         $order = Order::where('id', $id)
             ->where('user_id', $this->user->id)
             ->with('orderproducts')
+            ->where('status', 'waiting')
             ->firstOrFail();
 
         return $order;
