@@ -24,8 +24,17 @@ class CreateOrderProductsTable extends Migration
             $table->integer('discount')->nullable();
             $table->integer('description')->nullable();
             $table->integer('status')->nullable();//null or deleted
-
             $table->timestamps();
+
+            //relations
+            $table->foreign('order_id')->references('id')->on('orders')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('product_id')->references('id')->on('products')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('seller_id')->references('id')->on('shops')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

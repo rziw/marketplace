@@ -24,9 +24,13 @@ class CreateShopsTable extends Migration
             $table->text('city')->nullable();
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
-            $table->integer('owner_id')->unique();
+            $table->bigInteger('owner_id')->unique();
 
             $table->timestamps();
+
+            //relations
+            $table->foreign('owner_id')->references('id')->on('users')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
@@ -37,6 +41,8 @@ class CreateShopsTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('shops');
+        Schema::enableForeignKeyConstraints();
     }
 }

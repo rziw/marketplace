@@ -15,7 +15,7 @@ class CreateProductShopTable extends Migration
     {
         Schema::create('product_shop', function (Blueprint $table) {
             $table->id();
-            $table->integer('shop_id')->unsigned();
+            $table->bigInteger('shop_id')->unsigned();
             $table->integer('product_id')->unsigned();
             $table->integer('count')->default(0);
             $table->integer('price');
@@ -28,6 +28,13 @@ class CreateProductShopTable extends Migration
             $table->string('status')->default('waiting');//statuses are waiting or accepted
 
             $table->timestamps();
+
+            //relations
+            $table->foreign('shop_id')->references('id')->on('shops')
+                ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->foreign('product_id')->references('id')->on('products')
+                ->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
@@ -38,6 +45,8 @@ class CreateProductShopTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('product_shop');
+        Schema::enableForeignKeyConstraints();
     }
 }
