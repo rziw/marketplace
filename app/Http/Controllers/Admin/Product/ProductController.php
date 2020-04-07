@@ -51,16 +51,17 @@ class ProductController extends Controller
 
         $product->update($product_input);
         $shop->products()->updateExistingPivot($product, $product_shop_input);
-        $this->checkForNotifyUser($shop, $shop->products($product->id)->first(), $request);
+        $this->checkForNotifyUser($shop, $shop->products($product->id)->first(), $request);//TODO it seems parameter is wrong
 
         return response()->json(['message'=> 'You have successfully updated the product.']);
     }
 
     private function checkForNotifyUser(Shop $shop, Product $product, UpdateProductRequest $request)
     {
+        //TODO it's better to be an event listener on admin updated the product
         if(isset($request->status) && $product->pivot->status != $request->status) {
             Mail::fake();//Mock sending email unless all requirements of sending email are OK
-            $message = "status of shop updated to $request->status.";
+            $message = "status of product updated to $request->status.";
             $shop->user->notify(new ProductChanged($message));
         }
     }
@@ -75,6 +76,7 @@ class ProductController extends Controller
      */
     public function destroy($shop, Product $product)
     {
+        //TODO test if on delete cascade you don't need second line
         $product->delete();
         $shop->products()->detach($product);
 
