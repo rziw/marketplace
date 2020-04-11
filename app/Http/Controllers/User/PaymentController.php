@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Helpers\HandleOrder;
-use App\Helpers\updateProductQuantity;
+use App\Helpers\OrderHandler;
+use App\Helpers\ProductQuantityChanging;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\PaymentRequest;
 use App\Models\Payment;
@@ -24,9 +24,9 @@ class PaymentController extends Controller
     {
         $this->samanGateway = new SamanPayment();
         $this->mellatGateway = new MellatPayment();
-        $this->orderHandler = new HandleOrder();
+        $this->orderHandler = new OrderHandler();
         $this->orderRepository = new OrderRepository();
-        $this->updateProductQuantity = new updateProductQuantity();
+        $this->updateProductQuantity = new ProductQuantityChanging();
     }
 
     /**

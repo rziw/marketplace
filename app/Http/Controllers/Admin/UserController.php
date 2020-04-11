@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Helpers\CreateShop;
+use App\Helpers\ShopCreation;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateUserRequest;
 use App\Models\User;
@@ -58,7 +58,7 @@ class UserController extends Controller
 
     private function checkForCreateShop($user, $request) {
         if(isset($request->role) && $request->role == 'seller') {
-            $shop = new CreateShop();
+            $shop = new ShopCreation();
             $shop->store($user);
         }
     }

@@ -6,7 +6,7 @@ namespace App\Helpers;
 
 use App\Models\Order;
 
-class HandleOrder
+class OrderHandler
 {
     public function updateOrderStatus($order, $status)
     {

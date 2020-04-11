@@ -9,7 +9,7 @@ use App\Models\User;
 use App\Notifications\MarketChanged;
 use Illuminate\Support\Facades\Mail;
 
-class CreateShop
+class ShopCreation
 {
     public function store(User $user)
     {

@@ -7,7 +7,7 @@ namespace App\Helpers;
 use App\Events\ProductFinished;
 use App\Models\Shop;
 
-class updateProductQuantity
+class ProductQuantityChanging
 {
     public function updateQuantity($order)
     {

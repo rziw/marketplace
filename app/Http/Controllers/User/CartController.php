@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Helpers\HandleOrder;
+use App\Helpers\OrderHandler;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\CartRequest;
 use App\Models\Order;
@@ -67,7 +67,7 @@ class CartController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id, HandleOrder $handleOrder)
+    public function show($id, OrderHandler $handleOrder)
     {
         $cart = Order::whereId($id)->where('user_id', $this->user->id)->with('orderproducts')
             ->where('status', 'waiting')->firstOrFail();

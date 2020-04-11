@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Helpers\HandleOrder;
+use App\Helpers\OrderHandler;
 use App\Repositories\OrderRepository;
 use Closure;
 
@@ -19,7 +19,7 @@ class CheckDeletedProduct
      */
     public function __construct()
     {
-        $this->handleOrder = new HandleOrder();
+        $this->handleOrder = new OrderHandler();
         $this->orderRepository = new OrderRepository();
     }
 
