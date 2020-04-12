@@ -51,7 +51,9 @@ class ProductController extends Controller
 
         $product->update($product_input);
         $shop->products()->updateExistingPivot($product, $product_shop_input);
-        $this->checkForNotifyUser($shop, $shop->products($product->id)->first(), $request);//TODO it seems parameter is wrong
+        $product_with_pivot = $shop->products()->where('products.id', $product->id)->first();
+
+        $this->checkForNotifyUser($shop, $product_with_pivot, $request);
 
         return response()->json(['message'=> 'You have successfully updated the product.']);
     }
