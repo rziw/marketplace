@@ -32,7 +32,6 @@ class CartController extends Controller
         $order_products_input = $request->only(['product_id', 'shop_id', 'count', 'product_name']);
         $order_input['user_id'] = $this->user->id;
         $order_input['status'] = 'waiting';
-        $order_products_input['price'] = 5000;
 
         $order = Order::firstOrCreate($order_input);
 
