@@ -22,6 +22,9 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\UpdateCarts',
             'App\Listeners\AlertSellerAndCustomer',
         ],
+        'App\Events\Admin\ProductUpdated' => [
+            'App\Listeners\Admin\InformSellerIfStatusChanged',
+        ],
     ];
 
     /**

@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Admin\Product;
 
+use App\Events\Admin\ProductUpdated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateProductRequest;
 use App\Models\Product;
 use App\Models\Shop;
-use App\Notifications\ProductChanged;
-use Illuminate\Support\Facades\Mail;
 
 class ProductController extends Controller
 {
@@ -35,7 +34,6 @@ class ProductController extends Controller
         return response()->json(compact('product'));
     }
 
-
     /**
      * Update the specified resource in storage.
      *
@@ -50,22 +48,12 @@ class ProductController extends Controller
         $product_shop_input = $request->except(['name', 'description', 'tag']);
 
         $product->update($product_input);
-        $shop->products()->updateExistingPivot($product, $product_shop_input);
         $product_with_pivot = $shop->products()->where('products.id', $product->id)->first();
+        $shop->products()->updateExistingPivot($product, $product_shop_input);
 
-        $this->checkForNotifyUser($shop, $product_with_pivot, $request);
+        event(new ProductUpdated($product_with_pivot, $shop, $request));
 
         return response()->json(['message'=> 'You have successfully updated the product.']);
-    }
-
-    private function checkForNotifyUser(Shop $shop, Product $product, UpdateProductRequest $request)
-    {
-        //TODO it's better to be an event listener on admin updated the product
-        if(isset($request->status) && $product->pivot->status != $request->status) {
-            Mail::fake();//Mock sending email unless all requirements of sending email are OK
-            $message = "status of product updated to $request->status.";
-            $shop->user->notify(new ProductChanged($message));
-        }
     }
 
     /**
