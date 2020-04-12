@@ -66,10 +66,7 @@ class ProductController extends Controller
      */
     public function destroy($shop, Product $product)
     {
-        //TODO test if on delete cascade you don't need second line
         $product->delete();
-        $shop->products()->detach($product);
-
         return response()->json(['message'=> 'You have successfully deleted the product.']);
     }
 }
