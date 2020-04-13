@@ -17,14 +17,15 @@ class CartController extends Controller
 
     public function __construct()
     {
-        $this->user = JWTAuth::parseToken()->authenticate();
+        $this->user = JWTAuth::parseToken()->authenticate();//TODO it ruin some artisan commands,check it out,also
+        // there is no proper exception
         $this->middleware('product.count', ['only' => ['store']]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(CartRequest $request)
@@ -42,10 +43,10 @@ class CartController extends Controller
             'order_id' => $order->id,
             'shop_id' => $request->shop_id,
             'product_id' => $request->product_id
-            ], $order_products_input
+        ], $order_products_input
         );
 
-        return response()->json(['message'=> 'You have successfully updated your cart.']);
+        return response()->json(['message' => 'You have successfully updated your cart.']);
     }
 
     public function calculatePrice($request)
@@ -60,10 +61,11 @@ class CartController extends Controller
 
         return $calculated_price;
     }
+
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show($id, OrderHandler $handleOrder)
@@ -74,9 +76,9 @@ class CartController extends Controller
         $message = $handleOrder->permanentlyRemoveOrderProduct($cart);
         $available_products = $cart->orderproducts()->whereNull('status')->get();
 
-        if($available_products->count() < 1) {
+        if ($available_products->count() < 1) {
             return response()->json([
-                'error'=> 'the cart is empty',
+                'error' => 'the cart is empty',
                 'message' => $message
             ]);
         }
@@ -87,11 +89,23 @@ class CartController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
-        //TODO implement it as soon as possible
+        $cart = Order::where('user_id', $this->user->id)->where('status', 'waiting')
+            ->whereHas('orderproducts', function ($query) use ($id) {
+                $query->whereId($id);
+            })->firstOrFail();
+
+        if ($cart->orderproducts()->count() == 1) {
+            $cart->delete();
+            return response()->json(['message' => 'You have successfully deleted the product. cart is empty now']);
+        }
+
+        $cart->orderproducts()->whereId($id)->delete();
+
+        return response()->json(['message' => 'You have successfully deleted the product']);
     }
 }
