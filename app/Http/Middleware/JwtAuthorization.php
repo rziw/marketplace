@@ -20,6 +20,7 @@ class JwtAuthorization
         try {
             $user = JWTAuth::parseToken()->authenticate();
             if ($user && in_array($user->role, $roles)) {
+                $request->user = $user;
                 return $next($request);
             }
 
