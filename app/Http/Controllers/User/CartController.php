@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\CartRequest;
 use App\Models\Order;
 use App\Models\OrderProduct;
+use App\Repositories\OrderRepository;
 use App\Repositories\SellerRepository;
 use JWTAuth;
 use Illuminate\Http\Request;
@@ -68,10 +69,9 @@ class CartController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id, OrderHandler $handleOrder)
+    public function show($id, OrderHandler $handleOrder, OrderRepository $orderRepository)
     {
-        $cart = Order::whereId($id)->where('user_id', $this->user->id)->with('orderproducts')
-            ->where('status', 'waiting')->firstOrFail();
+        $cart = $orderRepository->get($id);
 
         $message = $handleOrder->permanentlyRemoveOrderProduct($cart);
         $available_products = $cart->orderproducts()->whereNull('status')->get();
