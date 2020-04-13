@@ -14,12 +14,8 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    private $user;
-
     public function __construct()
     {
-        $this->user = JWTAuth::parseToken()->authenticate();//TODO it ruins some artisan commands,check it out,also
-        // there is no proper exception
         $this->middleware('product.count', ['only' => ['store']]);
     }
 
@@ -32,7 +28,7 @@ class CartController extends Controller
     public function store(CartRequest $request)
     {
         $order_products_input = $request->only(['product_id', 'shop_id', 'count', 'product_name']);
-        $order_input['user_id'] = $this->user->id;
+        $order_input['user_id'] = $request->user->id;
         $order_input['status'] = 'waiting';
 
         $order = Order::firstOrCreate($order_input);
@@ -69,8 +65,9 @@ class CartController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id, OrderHandler $handleOrder, OrderRepository $orderRepository)
+    public function show($id, OrderHandler $handleOrder, OrderRepository $orderRepository, Request $request)
     {
+        return $request->user;
         $cart = $orderRepository->get($id);
 
         $message = $handleOrder->permanentlyRemoveOrderProduct($cart);
