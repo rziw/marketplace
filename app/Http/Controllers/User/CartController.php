@@ -18,7 +18,7 @@ class CartController extends Controller
 
     public function __construct()
     {
-        $this->user = JWTAuth::parseToken()->authenticate();//TODO it ruin some artisan commands,check it out,also
+        $this->user = JWTAuth::parseToken()->authenticate();//TODO it ruins some artisan commands,check it out,also
         // there is no proper exception
         $this->middleware('product.count', ['only' => ['store']]);
     }
@@ -92,12 +92,9 @@ class CartController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy($id, OrderRepository $orderRepository)
     {
-        $cart = Order::where('user_id', $this->user->id)->where('status', 'waiting')
-            ->whereHas('orderproducts', function ($query) use ($id) {
-                $query->whereId($id);
-            })->firstOrFail();
+        $cart = $orderRepository->getWithProductId($id);
 
         if ($cart->orderproducts()->count() == 1) {
             $cart->delete();

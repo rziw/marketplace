@@ -14,7 +14,7 @@ class OrderRepository implements Repository
 
     public function __construct()
     {
-        $this->user = JWTAuth::parseToken()->authenticate();
+        $this->user = JWTAuth::parseToken()->authenticate();//TODO it ruin some artisan commands,check it out
     }
 
     public function get($id)
@@ -24,6 +24,16 @@ class OrderRepository implements Repository
             ->with('orderproducts')
             ->where('status', 'waiting')
             ->firstOrFail();
+
+        return $order;
+    }
+
+    public function getWithProductId($product_id)
+    {
+        $order =  Order::where('user_id', $this->user->id)->where('status', 'waiting')
+            ->whereHas('orderproducts', function ($query) use ($product_id) {
+                $query->whereId($product_id);
+            })->firstOrFail();
 
         return $order;
     }
