@@ -15,10 +15,10 @@ class CreateOrderProductsTable extends Migration
     {
         Schema::create('order_products', function (Blueprint $table) {
             $table->id();
-            $table->integer('order_id')->unsigned();
+            $table->bigInteger('order_id')->unsigned();
             $table->integer('product_id')->unsigned();
             $table->string('product_name');
-            $table->integer('seller_id')->unsigned();
+            $table->bigInteger('shop_id')->unsigned();
             $table->integer('count')->unsigned();
             $table->integer('price')->unsigned();
             $table->integer('discount')->nullable();
@@ -33,7 +33,7 @@ class CreateOrderProductsTable extends Migration
             $table->foreign('product_id')->references('id')->on('products')
                 ->onDelete('cascade')->onUpdate('cascade');
 
-            $table->foreign('seller_id')->references('id')->on('shops')
+            $table->foreign('shop_id')->references('id')->on('shops')
                 ->onDelete('cascade')->onUpdate('cascade');
         });
     }
