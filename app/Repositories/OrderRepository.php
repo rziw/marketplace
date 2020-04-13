@@ -7,6 +7,7 @@ namespace App\Repositories;
 use App\Interfaces\Repository;
 use App\Models\Order;
 use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class OrderRepository implements Repository
 {
@@ -14,7 +15,11 @@ class OrderRepository implements Repository
 
     public function __construct()
     {
-        $this->user = JWTAuth::parseToken()->authenticate();//TODO it ruin some artisan commands,check it out
+        try {
+            $this->user = JWTAuth::parseToken()->authenticate();
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'Token is not valid'], 401);
+        }
     }
 
     public function get($id)
@@ -30,7 +35,7 @@ class OrderRepository implements Repository
 
     public function getWithProductId($product_id)
     {
-        $order =  Order::where('user_id', $this->user->id)->where('status', 'waiting')
+        $order = Order::where('user_id', $this->user->id)->where('status', 'waiting')
             ->whereHas('orderproducts', function ($query) use ($product_id) {
                 $query->whereId($product_id);
             })->firstOrFail();
@@ -46,7 +51,7 @@ class OrderRepository implements Repository
     public function listWithProductId($product_id)
     {
         $orders = Order::where('status', 'waiting')
-            ->whereHas('orderproducts', function ($q) use($product_id) {
+            ->whereHas('orderproducts', function ($q) use ($product_id) {
                 $q->where('order_products.product_id', $product_id);
             })->get();
 
