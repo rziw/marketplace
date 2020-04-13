@@ -37,7 +37,7 @@ class PaymentController extends Controller
      */
     public function payOrder(PaymentRequest $request)
     {
-        $order = $this->orderRepository->get($request->order_id);
+        $order = isset($request->order) ? $request->order : $this->orderRepository->get($request->order_id);
 
         $payment = ($request->gateway == 'saman') ? $this->samanGateway:
             $this->mellatGateway;
