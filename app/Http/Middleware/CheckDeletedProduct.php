@@ -27,10 +27,10 @@ class CheckDeletedProduct
     {
         $order = $this->orderRepository->get($request->order_id);
 
-        $message = $this->handleOrder->permanentlyRemoveOrderProduct($order);
+        $removed_product_message = $this->handleOrder->permanentlyRemoveOrderProduct($order);
 
-        if(count($message) > 0) {
-            return response()->json(['message'=> $message]);
+        if(count($removed_product_message) > 0) {
+            return response()->json(['message'=> $removed_product_message]);
         }
 
         $available_products = $order->orderproducts()->whereNull('status')->get();
