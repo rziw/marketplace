@@ -26,6 +26,7 @@ class CheckDeletedProduct
     public function handle($request, Closure $next)
     {
         $order = $this->orderRepository->get($request->order_id);
+        $request->order = $order;
 
         $removed_product_message = $this->handleOrder->permanentlyRemoveOrderProduct($order);
 
