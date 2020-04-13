@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use JWTAuth;
 
 class CheckUserAddress
 {
@@ -15,7 +16,10 @@ class CheckUserAddress
      */
     public function handle($request, Closure $next)
     {
-        //TODO implement it as soon as possible, that user address should not be empty for finilizing the order
-        return $next($request);
+        if (!is_null($request->user->address)) {
+            return $next($request);
+        }
+
+        return response()->json(['message' => 'Address could not be empty'], 200);
     }
 }
