@@ -27,18 +27,18 @@ class CartController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(CartRequest $request)
+    public function store(CartRequest $request, OrderHandler $orderHandler)
     {
         $order_input['user_id'] = $this->request->user->id;
         $order_input['status'] = 'waiting';
 
         $order = Order::firstOrCreate($order_input);
-        $this->storeOrderProduct($request, $order->id);
+        $this->storeOrderProduct($request, $order->id, $orderHandler);
 
         return response()->json(['message' => 'You have successfully updated your cart.']);
     }
 
-    private function storeOrderProduct($request, $order_id, OrderHandler $orderHandler)
+    private function storeOrderProduct($request, $order_id, $orderHandler)
     {
         $order_products_input = $request->only(['product_id', 'shop_id', 'count', 'product_name']);
         $order_products_input['order_id'] = $order_id;
