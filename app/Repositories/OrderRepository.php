@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Interfaces\Repository;
 use App\Models\Order;
+use Illuminate\Support\Facades\DB;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
@@ -33,6 +34,16 @@ class OrderRepository implements Repository
         return $order;
     }
 
+    public function getByUserId()
+    {
+        $order = Order::where('user_id', $this->user->id)
+            ->with('orderproducts')
+            ->where('status', 'waiting')
+            ->firstOrFail();
+
+        return $order;
+    }
+
     public function getWithProductId($product_id)
     {
         $order = Order::where('user_id', $this->user->id)->where('status', 'waiting')
@@ -41,6 +52,24 @@ class OrderRepository implements Repository
             })->firstOrFail();
 
         return $order;
+    }
+
+    public function getOrderedProducts($order_id)
+    {
+        $product_result = DB::table('order_products')->where('order_products.order_id', $order_id)
+            ->join('shops', 'order_products.shop_id', '=', 'shops.id')
+            ->join('product_shop', 'order_products.product_id', '=', 'product_shop.product_id')
+            ->select(
+                'order_products.id AS order_products_id',
+                'order_products.product_id AS order_products_product_id',
+                'order_products.count AS order_products_count',
+                'order_products.product_name AS product_name',
+                'product_shop.count AS product_count',
+                'product_shop.id AS product_id',
+                'shops.id AS shop_id'
+            )->get();
+
+        return $product_result;
     }
 
     public function list()
