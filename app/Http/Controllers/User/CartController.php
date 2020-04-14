@@ -30,23 +30,26 @@ class CartController extends Controller
      */
     public function store(CartRequest $request)
     {
-        $order_products_input = $request->only(['product_id', 'shop_id', 'count', 'product_name']);
         $order_input['user_id'] = $this->request->user->id;
         $order_input['status'] = 'waiting';
 
         $order = Order::firstOrCreate($order_input);
-        
-        $order_products_input['order_id'] = $order->id;
+        $this->storeOrderProduct($request, $order->id);
+
+        return response()->json(['message' => 'You have successfully updated your cart.']);
+    }
+
+    private function storeOrderProduct($request, $order_id)
+    {
+        $order_products_input = $request->only(['product_id', 'shop_id', 'count', 'product_name']);
+        $order_products_input['order_id'] = $order_id;
         $order_products_input['price'] = $this->calculatePrice($request);
 
         OrderProduct::updateOrCreate([
-            'order_id' => $order->id,
+            'order_id' => $order_id,
             'shop_id' => $request->shop_id,
             'product_id' => $request->product_id
-        ], $order_products_input
-        );
-
-        return response()->json(['message' => 'You have successfully updated your cart.']);
+        ], $order_products_input);
     }
 
     public function calculatePrice($request)
