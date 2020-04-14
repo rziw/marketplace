@@ -5,6 +5,7 @@ namespace App\Helpers;
 
 
 use App\Models\Order;
+use App\Repositories\SellerRepository;
 
 class OrderHandler
 {
@@ -16,6 +17,19 @@ class OrderHandler
     public function calculateOrderPrice(Order $order)
     {
         return $order->orderProducts->sum('price');
+    }
+
+    public function calculateAnOrderedProductPrice($request)
+    {
+        $shopRepository = new SellerRepository();
+
+        $shop = $shopRepository->get($request->shop_id);
+        $product = $shop->products()->whereIn('product_id', [$request->product_id])->firstOrfail();
+
+        $raw_price = $product->pivot->price;
+        $calculated_price = $request->count * $raw_price;
+
+        return $calculated_price;
     }
 
     public function permanentlyRemoveOrderProduct($order)

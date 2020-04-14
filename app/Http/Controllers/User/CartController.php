@@ -8,7 +8,6 @@ use App\Http\Requests\User\CartRequest;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Repositories\OrderRepository;
-use App\Repositories\SellerRepository;
 use JWTAuth;
 use Illuminate\Http\Request;
 
@@ -39,30 +38,17 @@ class CartController extends Controller
         return response()->json(['message' => 'You have successfully updated your cart.']);
     }
 
-    private function storeOrderProduct($request, $order_id)
+    private function storeOrderProduct($request, $order_id, OrderHandler $orderHandler)
     {
         $order_products_input = $request->only(['product_id', 'shop_id', 'count', 'product_name']);
         $order_products_input['order_id'] = $order_id;
-        $order_products_input['price'] = $this->calculatePrice($request);
+        $order_products_input['price'] = $orderHandler->calculateAnOrderedProductPrice($request);
 
         OrderProduct::updateOrCreate([
             'order_id' => $order_id,
             'shop_id' => $request->shop_id,
             'product_id' => $request->product_id
         ], $order_products_input);
-    }
-
-    public function calculatePrice($request)
-    {
-        $shopRepository = new SellerRepository();
-
-        $shop = $shopRepository->get($request->shop_id);
-        $product = $shop->products()->whereIn('product_id', [$request->product_id])->firstOrfail();
-
-        $raw_price = $product->pivot->price;
-        $calculated_price = $request->count * $raw_price;
-
-        return $calculated_price;
     }
 
     /**
