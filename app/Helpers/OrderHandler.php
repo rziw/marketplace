@@ -4,7 +4,6 @@
 namespace App\Helpers;
 
 
-use App\Models\Order;
 use App\Repositories\SellerRepository;
 
 class OrderHandler
