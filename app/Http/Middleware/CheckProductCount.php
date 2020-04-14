@@ -30,7 +30,7 @@ class CheckProductCount
         return $next($request);
     }
 
-    public function checkOrderedProductsAvailability($order)
+    private function checkOrderedProductsAvailability($order)
     {
         $ordered_products_result = $this->orderRepository->getOrderedProducts($order->id);
         $not_enough_quantity_message = array();
