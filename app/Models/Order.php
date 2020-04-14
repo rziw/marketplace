@@ -22,4 +22,9 @@ class Order extends Model
     {
         return $this->hasMany('App\Models\Payment');
     }
+
+    public function getTotalPriceAttribute()
+    {
+        return $this->orderProducts->sum('price');
+    }
 }

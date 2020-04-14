@@ -14,11 +14,6 @@ class OrderHandler
         $order->update(['status' => $status]);
     }
 
-    public function calculateOrderPrice(Order $order)
-    {
-        return $order->orderProducts->sum('price');
-    }
-
     public function calculateAnOrderedProductPrice($request)
     {
         $shopRepository = new SellerRepository();

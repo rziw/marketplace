@@ -42,7 +42,7 @@ class PaymentController extends Controller
         $payment = ($request->gateway == 'saman') ? $this->samanGateway:
             $this->mellatGateway;
 
-        $request->amount = $this->orderHandler->calculateOrderPrice($order);
+        $request->amount = $order->total_price;
 
         $pay_result = json_decode($payment->pay($request), true);
 
