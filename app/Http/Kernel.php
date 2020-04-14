@@ -65,6 +65,7 @@ class Kernel extends HttpKernel
         'auth.role' => \App\Http\Middleware\JwtAuthorization::class,
         'shop.owner' => \App\Http\Middleware\CheckShopOwner::class,
         'product.count' => \App\Http\Middleware\CheckProductCount::class,
+        'check.cart.product.count' => \App\Http\Middleware\CheckProductCountForAddingToCart::class,
         'check.address' => \App\Http\Middleware\CheckUserAddress::class,
         'deleted.products' => \App\Http\Middleware\CheckDeletedProduct::class,
     ];

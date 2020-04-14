@@ -14,9 +14,12 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    public function __construct()
+    protected $request;
+
+    public function __construct(Request $request)
     {
-        $this->middleware('product.count', ['only' => ['store']]);
+        $this->request = $request;
+        $this->middleware('check.cart.product.count', ['only' => ['store']]);
     }
 
     /**
@@ -28,11 +31,11 @@ class CartController extends Controller
     public function store(CartRequest $request)
     {
         $order_products_input = $request->only(['product_id', 'shop_id', 'count', 'product_name']);
-        $order_input['user_id'] = $request->user->id;
+        $order_input['user_id'] = $this->request->user->id;
         $order_input['status'] = 'waiting';
 
         $order = Order::firstOrCreate($order_input);
-
+        
         $order_products_input['order_id'] = $order->id;
         $order_products_input['price'] = $this->calculatePrice($request);
 
@@ -67,7 +70,6 @@ class CartController extends Controller
      */
     public function show($id, OrderHandler $handleOrder, OrderRepository $orderRepository, Request $request)
     {
-        return $request->user;
         $cart = $orderRepository->get($id);
 
         $message = $handleOrder->permanentlyRemoveOrderProduct($cart);
