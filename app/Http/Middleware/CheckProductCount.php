@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Helpers\OrderHandler;
 use App\Repositories\OrderRepository;
 use Closure;
 
@@ -10,7 +9,6 @@ class CheckProductCount
 {
     public function __construct()
     {
-        $this->orderHandler = new OrderHandler();
         $this->orderRepository = new OrderRepository();
     }
     /**
