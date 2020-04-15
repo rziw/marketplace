@@ -44,7 +44,7 @@ class OrderRepository implements Repository
         return $order;
     }
 
-    public function getWithProductId($product_id)
+    public function getByProductId($product_id)
     {
         $order = Order::where('user_id', $this->user->id)->where('status', 'waiting')
             ->whereHas('orderproducts', function ($query) use ($product_id) {
@@ -72,7 +72,7 @@ class OrderRepository implements Repository
         return $product_result;
     }
 
-    public function getOrderWithProductsAndUsers($shop_id, $items_per_page)
+    public function getOrderWithProductsAndUsersByShopId($shop_id, $items_per_page)
     {
         $orders_products = Order::with('orderproducts')
             ->whereHas('orderproducts', function ($query) use ($shop_id) {

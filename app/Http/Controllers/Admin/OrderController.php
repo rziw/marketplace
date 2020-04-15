@@ -19,7 +19,7 @@ class OrderController extends Controller
     public function index(Shop $shop, OrderRepository $orderRepository)
     {
         $items_per_page = request()->has('per_page') ? request('per_page') : 10;
-        $orders = $orderRepository->getOrderWithProductsAndUsers($shop->id, $items_per_page);
+        $orders = $orderRepository->getOrderWithProductsAndUsersByShopId($shop->id, $items_per_page);
 
         return response()->json(compact('orders'));
     }

@@ -82,7 +82,7 @@ class CartController extends Controller
      */
     public function destroy($id, OrderRepository $orderRepository)
     {
-        $cart = $orderRepository->getWithProductId($id);
+        $cart = $orderRepository->getByProductId($id);
 
         if ($cart->orderproducts()->count() == 1) {
             $cart->delete();
