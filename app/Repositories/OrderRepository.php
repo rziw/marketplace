@@ -72,6 +72,16 @@ class OrderRepository implements Repository
         return $product_result;
     }
 
+    public function getOrderWithProductsAndUsers($shop_id, $items_per_page)
+    {
+        $orders_products = Order::with('orderproducts')
+            ->whereHas('orderproducts', function ($query) use ($shop_id) {
+                $query->where('shop_id', $shop_id);
+            })->with('user')->paginate($items_per_page);
+
+        return $orders_products;
+    }
+
     public function list()
     {
         // TODO: Implement list() method.
