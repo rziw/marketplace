@@ -87,7 +87,7 @@ class OrderRepository implements Repository
         // TODO: Implement list() method.
     }
 
-    public function listWithProductId($product_id)
+    public function listByProductId($product_id)
     {
         $orders = Order::where('status', 'waiting')
             ->whereHas('orderproducts', function ($q) use ($product_id) {

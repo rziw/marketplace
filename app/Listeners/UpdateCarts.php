@@ -28,7 +28,7 @@ class UpdateCarts implements ShouldQueue
      */
     public function handle(ProductFinished $event)
     {
-        $orders = $this->orderRepository->listWithProductId($event->product->id);
+        $orders = $this->orderRepository->listByProductId($event->product->id);
 
         foreach ($orders as $order) {
             $order->orderproducts()->where('product_id', $event->product->id)->update(['status' => 'deleted']);
