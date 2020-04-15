@@ -15,12 +15,16 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->integer('order_id')->unsigned();
+            $table->bigInteger('order_id')->unsigned();
             $table->string('status');
             $table->string('tracking_code');
             $table->integer('price');
             $table->string('gateway');
             $table->timestamps();
+
+            //relation
+            $table->foreign('order_id')->references('id')->on('orders')
+                ->onUpdate('cascade');
         });
     }
 
