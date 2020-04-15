@@ -16,7 +16,9 @@ class OrderController extends Controller
      */
     public function index(Shop $shop)
     {
-        $orders = $shop->orderProducts;
+        $items_per_page = request()->has('per_page') ? request('per_page') : 10;
+        $orders = $shop->orderProducts()->paginate($items_per_page);
+
         return response()->json(compact('orders'));
     }
 
