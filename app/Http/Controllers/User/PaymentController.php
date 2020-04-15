@@ -46,7 +46,7 @@ class PaymentController extends Controller
 
         $pay_result = json_decode($payment->pay($request), true);
 
-        $this->storePayment($pay_result, $request, $order);
+        $this->storePayment($pay_result, $request);
 
         if($pay_result['StateCode'] == 200) {
 
@@ -59,7 +59,7 @@ class PaymentController extends Controller
         return response()->json(['error'=> $pay_result['message']]);
     }
 
-    private function storePayment($pay_result, Request $request, $order)
+    private function storePayment($pay_result, Request $request)
     {
         $input = $request->only(['order_id', 'gateway']);
         $input['status'] = $pay_result['State'];
