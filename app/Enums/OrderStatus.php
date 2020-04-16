@@ -6,10 +6,12 @@ use BenSampo\Enum\Enum;
 
 final class OrderStatus extends Enum
 {
-    const waiting =   0;
+    const waiting = 0;
     const paid =   1;
-    const accepted = 2;
-    const shipped = 3;
-    const rejected = 4;
-    const returned = 5;
+    const cancelled =   2;
+    const accepted = 3;
+    const shipped = 4;
+    const rejected = 5;
+    const returned = 6;
+    const delivered = 7;
 }
