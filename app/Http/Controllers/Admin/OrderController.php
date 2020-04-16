@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\OrderStatusChanger;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\UpdateOrderStatusRequest;
 use App\Models\Order;
 use App\Models\Shop;
 use App\Repositories\OrderRepository;
@@ -24,4 +26,11 @@ class OrderController extends Controller
         return response()->json(compact('orders'));
     }
 
+    public function updateStatus(Order $order, UpdateOrderStatusRequest $request, OrderStatusChanger $orderStatusChanger)
+    {
+        $function_name = $request->status;
+        $orderStatusChanger->$function_name($request->status, $order);
+
+        return response()->json(['message'=> 'You have successfully updated the status of order.']);
+    }
 }

@@ -16,6 +16,8 @@ Route::get('shop/{shop}/products', 'Product\ProductController@index');
 
 Route::get('shop/{shop}/orders', 'OrderController@index');
 
+Route::put('order/{order}', 'OrderController@updateStatus');
+
 Route::get('products/name/{name}/search', 'Product\ProductSearchController');
 
 Route::post('shop/{shop}/product/{product}/duplicate', 'Product\ProductDuplicateController');
