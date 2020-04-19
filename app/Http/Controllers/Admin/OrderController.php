@@ -26,11 +26,11 @@ class OrderController extends Controller
         return response()->json(compact('orders'));
     }
 
-    public function updateStatus(Order $order, UpdateOrderStatusRequest $request, OrderStatusChanger $orderStatusChanger)
+    public function updateStatus(Order $order, UpdateOrderStatusRequest $request)
     {
-        $function_name = $request->status;
-        $orderStatusChanger->$function_name($request->status, $order);
+        $orderStatusChanger = new OrderStatusChanger($request->status, $order);
+        $update_result_message = $orderStatusChanger->checkAndUpdateStatus();
 
-        return response()->json(['message'=> 'You have successfully updated the status of order.']);
+        return response()->json(['message'=> $update_result_message]);
     }
 }
