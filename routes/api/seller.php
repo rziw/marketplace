@@ -9,3 +9,9 @@ Route::resource('shop/{shop}/product', 'ProductController')
 
 Route::get('shop/{shop}/products', 'ProductController@index')
     ->middleware('shop.owner');
+
+Route::get('shop/{shop}/orders', 'OrderController@index')
+    ->middleware('shop.owner');
+
+Route::put('shop/{shop}/order/{order}', 'OrderController@updateStatus')
+->middleware('shop.owner');
