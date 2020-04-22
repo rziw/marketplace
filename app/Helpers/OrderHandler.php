@@ -4,7 +4,7 @@
 namespace App\Helpers;
 
 
-use App\Repositories\SellerRepository;
+use App\Repositories\ShopRepository;
 
 class OrderHandler
 {
@@ -15,7 +15,7 @@ class OrderHandler
 
     public function calculateAnOrderedProductPrice($request)
     {
-        $shopRepository = new SellerRepository();
+        $shopRepository = new ShopRepository();
 
         $shop = $shopRepository->get($request->shop_id);
         $product = $shop->products()->whereIn('product_id', [$request->product_id])->firstOrfail();

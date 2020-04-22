@@ -7,7 +7,7 @@ namespace App\Repositories;
 use App\Interfaces\Repository;
 use App\Models\Shop;
 
-class SellerRepository implements Repository
+class ShopRepository implements Repository
 {
     public function getClosest($id, $lat, $lng, $radius)
     {

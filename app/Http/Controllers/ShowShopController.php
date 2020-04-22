@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\SellerRepository;
+use App\Repositories\ShopRepository;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use  JWTAuth;
 
-class ShowSellerController extends Controller
+class ShowShopController extends Controller
 {
     private $request;
-    private $sellerRepository;
+    private $shopRepository;
 
-    public function __construct(Request $request, SellerRepository $sellerRepository)
+    public function __construct(Request $request, ShopRepository $shopRepository)
     {
         $this->request = $request;
-        $this->sellerRepository = $sellerRepository;
+        $this->shopRepository = $shopRepository;
     }
 
     public function show($id)
@@ -42,11 +42,11 @@ class ShowSellerController extends Controller
             && $this->request->has('lng') && !is_null($this->request->lng)
             && $this->request->has('radius') && !is_null($this->request->radius)) {
 
-            $products = $this->sellerRepository->getClosest($id, $this->request->lat, $this->request->lng,
+            $products = $this->shopRepository->getClosest($id, $this->request->lat, $this->request->lng,
                 $this->request->radius);
 
         } else {
-            $products = $this->sellerRepository->get($id);
+            $products = $this->shopRepository->get($id);
         }
 
         return $products;
@@ -56,7 +56,7 @@ class ShowSellerController extends Controller
     {
         if (!is_null($user->latitude) && !is_null($user->longitude)) {
 
-            $products = $this->sellerRepository->getClosest($id, $user->latitude, $user->longitude,
+            $products = $this->shopRepository->getClosest($id, $user->latitude, $user->longitude,
                 $user->radius);
 
         } elseif ($this->request->has('lat') && !is_null($this->request->lat)
@@ -64,11 +64,11 @@ class ShowSellerController extends Controller
             && $this->request->has('radius') && !is_null($this->request->radius)
         ) {
 
-            $products = $this->sellerRepository->getClosest($id, $this->request->lat, $this->request->lng,
+            $products = $this->shopRepository->getClosest($id, $this->request->lat, $this->request->lng,
                 $this->request->radius);
 
         } else {
-            $products = $this->sellerRepository->get($id);
+            $products = $this->shopRepository->get($id);
         }
 
         return $products;
