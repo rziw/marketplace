@@ -20,26 +20,30 @@ class PaymentController extends Controller
     private $orderRepository;
     private $updateProductQuantity;
 
-    public function __construct()
+    public function __construct(SamanPayment $samanGateway,
+                                MellatPayment $mellatGateway,
+                                OrderHandler $orderHandler,
+                                orderRepository $orderRepository,
+                                ProductQuantityChanging $updateProductQuantity)
     {
-        $this->samanGateway = new SamanPayment();
-        $this->mellatGateway = new MellatPayment();
-        $this->orderHandler = new OrderHandler();
-        $this->orderRepository = new OrderRepository();
-        $this->updateProductQuantity = new ProductQuantityChanging();
+        $this->samanGateway = $samanGateway;
+        $this->mellatGateway = $mellatGateway;
+        $this->orderHandler = $orderHandler;
+        $this->orderRepository = $orderRepository;
+        $this->updateProductQuantity = $updateProductQuantity;
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function payOrder(PaymentRequest $request)
     {
         $order = isset($request->order) ? $request->order : $this->orderRepository->get($request->order_id);
 
-        $payment = ($request->gateway == 'saman') ? $this->samanGateway:
+        $payment = ($request->gateway == 'saman') ? $this->samanGateway :
             $this->mellatGateway;
 
         $request->amount = $order->total_price;
@@ -48,7 +52,7 @@ class PaymentController extends Controller
 
         $this->storePayment($pay_result, $request);
 
-        if($pay_result['StateCode'] == 200) {
+        if ($pay_result['StateCode'] == 200) {
 
             $this->orderHandler->updateOrderStatus($order, 'paid');
             $this->updateProductQuantity->updateQuantity($order);
@@ -56,7 +60,7 @@ class PaymentController extends Controller
 
         }
 
-        return response()->json(['error'=> $pay_result['message']]);
+        return response()->json(['error' => $pay_result['message']]);
     }
 
     private function storePayment($pay_result, Request $request)
