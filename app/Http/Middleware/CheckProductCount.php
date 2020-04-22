@@ -36,7 +36,7 @@ class CheckProductCount
         $not_enough_quantity_message = array();
 
         foreach ($ordered_products_result as $ordered_product) {
-            if ($ordered_product->order_products_count < $ordered_product->product_count) {
+            if ($ordered_product->order_products_count > $ordered_product->product_count) {
                 $not_enough_quantity_message[] = "quantity of this item : $ordered_product->product_name is changed
                  and just $ordered_product->product_count of it is available";
             }
