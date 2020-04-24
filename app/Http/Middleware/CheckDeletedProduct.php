@@ -17,10 +17,10 @@ class CheckDeletedProduct
      * @param  \Closure  $next
      * @return mixed
      */
-    public function __construct()
+    public function __construct(OrderHandler $orderHandler, OrderRepository $orderRepository)
     {
-        $this->handleOrder = new OrderHandler();
-        $this->orderRepository = new OrderRepository();
+        $this->handleOrder = $orderHandler;
+        $this->orderRepository = $orderRepository;
     }
 
     public function handle($request, Closure $next)

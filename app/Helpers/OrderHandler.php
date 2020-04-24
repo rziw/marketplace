@@ -4,8 +4,6 @@
 namespace App\Helpers;
 
 
-use App\Repositories\ShopRepository;
-
 class OrderHandler
 {
     public function updateOrderStatus($order, $status)
@@ -15,9 +13,7 @@ class OrderHandler
 
     public function calculateAnOrderedProductPrice($request)
     {
-        $shopRepository = new ShopRepository();
-
-        $shop = $shopRepository->get($request->shop_id);
+        $shop = app()->call('App\Repositories\ShopRepository@get', [$request->shop_id]);
         $product = $shop->products()->whereIn('product_id', [$request->product_id])->firstOrfail();
 
         $raw_price = $product->pivot->price;

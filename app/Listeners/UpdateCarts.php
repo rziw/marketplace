@@ -15,9 +15,9 @@ class UpdateCarts implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(OrderRepository $orderRepository)
     {
-        $this->orderRepository = new OrderRepository();
+        $this->orderRepository = $orderRepository;
     }
 
     /**

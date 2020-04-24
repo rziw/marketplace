@@ -56,10 +56,9 @@ class UserController extends Controller
         return response()->json(['message'=> 'You have successfully updated the user.']);
     }
 
-    private function checkForCreateShop($user, $request) {
+    private function checkForCreateShop($user, $request) { //TODO should it be in a separate class??
         if(isset($request->role) && $request->role == 'seller') {
-            $shop = new ShopCreation();
-            $shop->store($user);
+            app()->call('App\Helpers\ShopCreation@store', [$user]);
         }
     }
 }

@@ -12,7 +12,7 @@ class OrderStatusChanger
     private $success_msg;
     private $error_msg;
 
-    public function __construct($new_status, $order)
+    public function instantiateFields($new_status, $order)
     {
         $this->new_status = $new_status;
         $this->previous_status = $order->status;
@@ -26,7 +26,7 @@ class OrderStatusChanger
         $function_name = $this->new_status;
 
         if($this->new_status == $this->previous_status) {
-            return "Already is $this->new_status";
+            return "Already is ".$this->new_status;
         } else {
             return $this->$function_name();
         }

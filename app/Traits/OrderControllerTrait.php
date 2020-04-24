@@ -28,8 +28,10 @@ trait OrderControllerTrait
 
     public function updateStatus(Shop $shop, Order $order, UpdateOrderStatusRequest $request)
     {
-        $orderStatusChanger = new OrderStatusChanger($request->status, $order);
-        $update_result_message = $orderStatusChanger->checkAndUpdateStatus();
+        $orderStatusChanger = app()->make(OrderStatusChanger::class);
+
+        app()->call([$orderStatusChanger, 'instantiateFields'], [$request->status, $order]);
+        $update_result_message = app()->call([$orderStatusChanger, 'checkAndUpdateStatus']);
 
         return response()->json(['message'=> $update_result_message]);
     }

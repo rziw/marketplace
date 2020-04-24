@@ -7,9 +7,9 @@ use Closure;
 
 class CheckProductCount
 {
-    public function __construct()
+    public function __construct(OrderRepository $orderRepository)
     {
-        $this->orderRepository = new OrderRepository();
+        $this->orderRepository = $orderRepository;
     }
     /**
      * Handle an incoming request.
