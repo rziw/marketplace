@@ -86,4 +86,21 @@ class CartControllerTest extends TestCase
         $this->assertDatabaseMissing('orders', $order_data);
         $this->assertDatabaseMissing('order_products', $order_products_data);
     }
+
+    /**
+     * @test
+     */
+    public function cantStoreIfRequestBodyIsEmpty()
+    {
+        $storeCartUrl = config('app.url') . '/api/cart';
+
+        $response = $this->json('POST', $storeCartUrl,[],
+            $this->headers);
+
+        $response
+            ->assertStatus(422)
+            ->assertJsonStructure([
+                'errors'
+            ]);
+    }
 }
