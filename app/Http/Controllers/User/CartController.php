@@ -17,7 +17,7 @@ class CartController extends Controller
 
     public function __construct(Request $request)
     {
-        $this->request = $request;
+        $this->request = $request;//it's beet set in jwt middleware on top of user.php route
         $this->middleware('check.cart.product.count', ['only' => ['store']]);
     }
 
