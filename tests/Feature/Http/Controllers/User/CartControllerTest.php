@@ -13,6 +13,7 @@ class CartControllerTest extends TestCase
 
     private $user;
     private $headers;
+    private $addCartUrl;
 
     public function setUp(): void
     {
@@ -25,6 +26,7 @@ class CartControllerTest extends TestCase
 
         $token = $token = JWTAuth::fromUser($this->user);
         $this->headers = ['Authorization' => "Bearer $token"];
+        $this->addCartUrl = config('app.url') . '/api/cart';
     }
 
     /**
@@ -32,7 +34,6 @@ class CartControllerTest extends TestCase
      */
     public function storeCartSuccessfully()
     {
-        $storeCartUrl = config('app.url') . '/api/cart';
         $order_data = [
             'user_id' => $this->user->id,
             'status' => 'waiting'
@@ -44,7 +45,7 @@ class CartControllerTest extends TestCase
             'product_name' => 'product 1'
         ];
 
-        $response = $this->json('POST', $storeCartUrl, array_merge($order_data, $order_products_data),
+        $response = $this->json('POST', $this->addCartUrl, array_merge($order_data, $order_products_data),
             $this->headers);
 
         $this->assertDatabaseHas('orders', $order_data);
@@ -62,7 +63,6 @@ class CartControllerTest extends TestCase
      */
     public function cantStoreCartWithExceededProductCount()
     {
-        $storeCartUrl = config('app.url') . '/api/cart';
         $order_data = [
             'user_id' => $this->user->id,
             'status' => 'waiting',
@@ -74,7 +74,7 @@ class CartControllerTest extends TestCase
             'product_name' => 'product 1'
         ];
 
-        $response = $this->json('POST', $storeCartUrl, array_merge($order_data, $order_products_data),
+        $response = $this->json('POST', $this->addCartUrl, array_merge($order_data, $order_products_data),
             $this->headers);
 
         $response
@@ -92,9 +92,8 @@ class CartControllerTest extends TestCase
      */
     public function cantStoreIfRequestBodyIsEmpty()
     {
-        $storeCartUrl = config('app.url') . '/api/cart';
 
-        $response = $this->json('POST', $storeCartUrl,[],
+        $response = $this->json('POST', $this->addCartUrl,[],
             $this->headers);
 
         $response
