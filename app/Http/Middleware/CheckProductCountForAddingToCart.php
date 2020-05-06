@@ -2,11 +2,16 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Shop;
+use App\Repositories\ProductRepository;
+use App\Repositories\ShopRepository;
 use Closure;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 
 class CheckProductCountForAddingToCart
 {
+    protected $shopRepository;
+    protected $productRepository;
     /**
      * Handle an incoming request.
      *
@@ -14,25 +19,38 @@ class CheckProductCountForAddingToCart
      * @param  \Closure  $next
      * @return mixed
      */
+    public function __construct(ShopRepository $shopRepository, ProductRepository $productRepository)
+    {
+        $this->shopRepository = $shopRepository;
+        $this->productRepository = $productRepository;
+    }
+
     public function handle($request, Closure $next)
     {
         $not_enough_quantity_message = $this->checkProductCount($request);
 
         if(count($not_enough_quantity_message) > 0) {
-            return response()->json(['message'=> $not_enough_quantity_message]);
+            return response()->json(['error'=> $not_enough_quantity_message]);
         }
 
         return $next($request);
     }
 
-    private function checkProductCount($request)
+    public function checkProductCount($request)
     {
-        $shop = Shop::find($request->shop_id);
-        $product_with_pivot = $shop->products()->where('products.id', $request->product_id)->firstOrFail();
+        $shop = $this->shopRepository->getWithoutRelation($request->shop_id);
+        $product_with_pivot = $this->productRepository->getFromSpecificShop($shop, $request->product_id);
+
+        return $this->compareProductInStockCountAndRequestedCount($product_with_pivot->pivot->count,
+            $request->count);
+    }
+
+    private function compareProductInStockCountAndRequestedCount($product_in_stock_count, $product_requested_count)
+    {
         $not_enough_quantity_message = array();
 
-        if ($product_with_pivot->pivot->count < $request->count) {
-            $not_enough_quantity_message[] = "only ".$product_with_pivot->pivot->count." of this item is available";
+        if ($product_in_stock_count < $product_requested_count) {
+            $not_enough_quantity_message[] = "only ".$product_in_stock_count." of this item is available";
         }
 
         return $not_enough_quantity_message;

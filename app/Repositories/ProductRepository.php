@@ -61,4 +61,9 @@ class ProductRepository implements Repository
 
         return $product;
     }
+
+    public function getFromSpecificShop($shop, $id)
+    {
+        return $shop->products()->where('products.id', $id)->firstOrFail();
+    }
 }

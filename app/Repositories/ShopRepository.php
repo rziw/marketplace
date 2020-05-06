@@ -34,6 +34,11 @@ class ShopRepository implements Repository
         return $shop;
     }
 
+    public function getWithoutRelation($id)
+    {
+        return Shop::findOrFail($id);
+    }
+
     public function list()
     {
         // TODO: Implement list() method.
