@@ -16,10 +16,12 @@ class OrderHandler
         $shop = app()->call('App\Repositories\ShopRepository@get', [$request->shop_id]);
         $product = $shop->products()->whereIn('product_id', [$request->product_id])->firstOrfail();
 
-        $raw_price = $product->pivot->price;
-        $calculated_price = $request->count * $raw_price;
+        return $this->calculatePriceAction($product->pivot->price, $request->count);
+    }
 
-        return $calculated_price;
+    private function calculatePriceAction($productPrice, $requestedCount)
+    {
+        return $requestedCount * $productPrice;
     }
 
     public function permanentlyRemoveOrderProduct($order)
