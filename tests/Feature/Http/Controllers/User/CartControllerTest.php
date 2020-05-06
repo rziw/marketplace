@@ -56,4 +56,34 @@ class CartControllerTest extends TestCase
                 'message'
             ]);
     }
+
+    /**
+     * @test
+     */
+    public function cantStoreCartWithExceededProductCount()
+    {
+        $storeCartUrl = config('app.url') . '/api/cart';
+        $order_data = [
+            'user_id' => $this->user->id,
+            'status' => 'waiting',
+        ];
+        $order_products_data = [
+            'product_id' => 1,
+            'shop_id' => 1,
+            'count' => 101,
+            'product_name' => 'product 1'
+        ];
+
+        $response = $this->json('POST', $storeCartUrl, array_merge($order_data, $order_products_data),
+            $this->headers);
+
+        $response
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'error'
+            ]);
+
+        $this->assertDatabaseMissing('orders', $order_data);
+        $this->assertDatabaseMissing('order_products', $order_products_data);
+    }
 }
