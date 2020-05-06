@@ -27,6 +27,8 @@ class CheckProductCountForAddingToCart
 
     public function handle($request, Closure $next)
     {
+        $this->validate($request);
+
         $not_enough_quantity_message = $this->checkProductCount($request);
 
         if(count($not_enough_quantity_message) > 0) {
@@ -54,5 +56,19 @@ class CheckProductCountForAddingToCart
         }
 
         return $not_enough_quantity_message;
+    }
+
+    private function validate($request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'product_id' => 'required',
+            'shop_id' => 'required',
+            'count' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            throw new HttpResponseException(response()->json(['errors' => $validator->errors()
+            ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY));
+        }
     }
 }
