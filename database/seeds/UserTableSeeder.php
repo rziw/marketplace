@@ -12,25 +12,14 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-
-        $users = [
-            [
-                'id' => 1,
-                'name' => 'Raziyeh',
-                'email' => 'mrs.safari20@gmail.com',
-                'password' => bcrypt('123456'),
-                'role' => 'admin',
-            ],
-            [
-                'id' => 2,
-                'name' => 'Moein',
-                'email' => 'm.pakkhesal@alopeyk.com',
-                'password' => bcrypt('123456'),
-                'role' => 'admin',
-            ],
+        $user = [
+            'id' => 1,
+            'name' => 'Raziyeh',
+            'email' => 'mrs.safari20@gmail.com',
+            'password' => bcrypt('123456'),
+            'role' => 'admin',
         ];
-        foreach($users as $user){
-            User::updateOrCreate(['id' => $user['id']], $user);
-        }
+
+        User::updateOrCreate(['id' => $user['id']], $user);
     }
 }
