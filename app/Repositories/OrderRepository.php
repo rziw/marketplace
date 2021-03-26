@@ -1,34 +1,20 @@
 <?php
 
-
 namespace App\Repositories;
 
-
-use App\Interfaces\Repository;
 use App\Models\Order;
+use App\Enums\OrderStatus;
+use App\Interfaces\Repository;
 use Illuminate\Support\Facades\DB;
-use JWTAuth;
-use Tymon\JWTAuth\Exceptions\JWTException;
 
 class OrderRepository implements Repository
 {
-    private $user;
-
-    public function __construct()
+    public function findByUser(int $orderId, int $userId)
     {
-        try {
-            $this->user = JWTAuth::parseToken()->authenticate();
-        } catch (JWTException $e) {
-            return response()->json(['error' => 'Token is not valid'], 401);
-        }
-    }
-
-    public function get($id)
-    {
-        $order = Order::where('id', $id)
-            ->where('user_id', $this->user->id)
+        $order = Order::where('id', $orderId)
+            ->where('user_id', $userId)
             ->with('orderproducts')
-            ->where('status', 'waiting')
+            ->where('status', OrderStatus::waiting)
             ->firstOrFail();
 
         return $order;
@@ -44,11 +30,11 @@ class OrderRepository implements Repository
         return $order;
     }
 
-    public function getByProductId($product_id)
+    public function getByProductId(int $productId, int $userId)
     {
-        $order = Order::where('user_id', $this->user->id)->where('status', 'waiting')
-            ->whereHas('orderproducts', function ($query) use ($product_id) {
-                $query->whereId($product_id);
+        $order = Order::where('user_id', $userId)->where('status', OrderStatus::waiting)
+            ->whereHas('orderProducts', function ($query) use ($productId) {
+                $query->where('product_id', $productId);
             })->firstOrFail();
 
         return $order;

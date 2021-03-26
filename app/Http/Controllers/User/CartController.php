@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Helpers\OrderHandler;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\CartRequest;
 use App\Repositories\OrderRepository;
+use App\Services\OrderDeletionService;
 use App\Services\OrderCreationService;
-use Illuminate\Http\Request;
+use App\Http\Requests\User\CartRequest;
 
 class CartController extends Controller
 {
@@ -25,27 +24,16 @@ class CartController extends Controller
         return response()->json(['message' => 'You have successfully updated your cart.']);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function show($id, OrderHandler $handleOrder, OrderRepository $orderRepository, Request $request)
+    public function show(
+        int $orderId,
+        OrderRepository $orderRepository,
+        OrderDeletionService $orderDeletionService
+    ): JsonResponse
     {
-        $cart = $orderRepository->get($id);
+        $order = $orderRepository->findByUser($orderId, auth('api')->user()->id);
+        $deletingMessage = $orderDeletionService->permanentlyRemoveOrderProduct($order);
 
-        $message = $handleOrder->permanentlyRemoveOrderProduct($cart);
-        $available_products = $cart->orderproducts()->whereNull('status')->get();
-
-        if ($available_products->count() < 1) {
-            return response()->json([
-                'error' => 'the cart is empty',
-                'message' => $message
-            ]);
-        }
-
-        return response()->json(compact('cart', 'message'));
+        return response()->json(compact('order', 'deletingMessage'));
     }
 
     /**

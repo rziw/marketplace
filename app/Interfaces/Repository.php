@@ -3,6 +3,6 @@ namespace App\Interfaces;
 
 interface Repository
 {
-    public function get($id);
+    public function findByUser(int $orderId, int $userId);
     public function list();
 }
