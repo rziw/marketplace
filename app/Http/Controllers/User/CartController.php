@@ -3,52 +3,26 @@
 namespace App\Http\Controllers\User;
 
 use App\Helpers\OrderHandler;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\CartRequest;
-use App\Models\Order;
-use App\Models\OrderProduct;
 use App\Repositories\OrderRepository;
-use JWTAuth;
+use App\Services\OrderCreationService;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    protected $request;
-
-    public function __construct(Request $request)
+    public function __construct()
     {
-        $this->request = $request;//it's beet set in jwt middleware on top of user.php route
         $this->middleware('check.cart.product.count', ['only' => ['store']]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function store(CartRequest $request, OrderHandler $orderHandler)
+    public function store(CartRequest $request, OrderCreationService $orderCreationService): JsonResponse
     {
-        $order_input['user_id'] = $this->request->user->id;
-        $order_input['status'] = 'waiting';
-
-        $order = Order::firstOrCreate($order_input);
-        $this->storeOrderProduct($request, $order->id, $orderHandler);
+        $orderCreationService->provideOrderInput();
+        $orderCreationService->storeOrder($request);
 
         return response()->json(['message' => 'You have successfully updated your cart.']);
-    }
-
-    private function storeOrderProduct($request, $order_id, $orderHandler)
-    {
-        $order_products_input = $request->only(['product_id', 'shop_id', 'count', 'product_name']);
-        $order_products_input['order_id'] = $order_id;
-        $order_products_input['price'] = $orderHandler->calculateAnOrderedProductPrice($request);
-
-        OrderProduct::updateOrCreate([
-            'order_id' => $order_id,
-            'shop_id' => $request->shop_id,
-            'product_id' => $request->product_id
-        ], $order_products_input);
     }
 
     /**
