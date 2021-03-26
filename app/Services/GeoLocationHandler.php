@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Services;
-
 
 use GuzzleHttp\Client;
 
@@ -23,39 +21,27 @@ class GeoLocationHandler
         }
     }
 
-    /**
-     * @param mixed $latitude
-     */
-    private function setLatitude($latitude): void
+    private function setLatitude(float $latitude): void
     {
         $this->latitude = $latitude;
     }
 
-    /**
-     * @param mixed $longitude
-     */
-    private function setLongitude($longitude): void
+    private function setLongitude(float $longitude): void
     {
         $this->longitude = $longitude;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getLatitude()
+    public function getLatitude(): float
     {
         return $this->latitude;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getLongitude()
+    public function getLongitude(): float
     {
         return $this->longitude;
     }
 
-    public function getLocation($request)
+    public function getLocation($request): array
     {
         $api_key = config('services.map.key');
         $client = new Client();
