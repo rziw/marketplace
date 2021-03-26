@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use JWTAuth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class JwtAuthorization
@@ -19,8 +19,8 @@ class JwtAuthorization
     {
         try {
             $user = JWTAuth::parseToken()->authenticate();
+
             if ($user && in_array($user->role, $roles)) {
-                $request->user = $user;
                 return $next($request);
             }
 
