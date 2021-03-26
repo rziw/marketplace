@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\ProductRepository;
-use Illuminate\Http\Request;
-use Tymon\JWTAuth\Exceptions\JWTException;
 use JWTAuth;
+use Illuminate\Http\Request;
+use App\Repositories\ProductRepository;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class ShowProductController extends Controller
 {
@@ -46,7 +46,7 @@ class ShowProductController extends Controller
                 $this->request->radius);
 
         } else {
-            $products = $this->productRepository->get($id);
+            $products = $this->productRepository->find($id);
         }
 
         return $products;
@@ -68,7 +68,7 @@ class ShowProductController extends Controller
                 $this->request->radius);
 
         } else {
-            $products = $this->productRepository->get($id);
+            $products = $this->productRepository->find($id);
         }
 
         return $products;

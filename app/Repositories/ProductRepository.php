@@ -51,7 +51,7 @@ class ProductRepository implements Repository
         return $product;
     }
 
-    public function get($id)
+    public function find($id)
     {
         $product = Product::where('id', $id)->whereHas('shops', function($q) {
             $q->where('product_shop.status', 'accepted');
