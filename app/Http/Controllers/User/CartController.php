@@ -36,22 +36,9 @@ class CartController extends Controller
         return response()->json(compact('order', 'deletingMessage'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function destroy($id, OrderRepository $orderRepository)
+    public function destroy(int $productId, OrderDeletionService $orderDeletionService): JsonResponse
     {
-        $cart = $orderRepository->getByProductId($id);
-
-        if ($cart->orderproducts()->count() == 1) {
-            $cart->delete();
-            return response()->json(['message' => 'You have successfully deleted the product. cart is empty now']);
-        }
-
-        $cart->orderproducts()->whereId($id)->delete();
+        $orderDeletionService->destroyOrderProduct($productId);
 
         return response()->json(['message' => 'You have successfully deleted the product']);
     }
