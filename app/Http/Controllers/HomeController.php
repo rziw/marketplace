@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\ProductRepository;
-use Illuminate\Http\Request;
 use JWTAuth;
-use Tymon\JWTAuth\Exceptions\JWTException;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\Repositories\ProductRepository;
 
 class HomeController extends Controller
 {
@@ -18,30 +19,20 @@ class HomeController extends Controller
         $this->productRepository = $productRepository;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function index()
+    public function index(): JsonResponse
     {
-        try {
-            $user = JWTAuth::parseToken()->authenticate();
+        $user = auth('api')->user();
 
-            if ($user) {
-                $products = $this->listForAuthenticatedUser($user);
-            } else {//token is invalid for any reason
-                $products = $this->listForNotAuthenticatedUser();
-            }
-
-        } catch (JWTException $e) {//token not set
-            $products = $this->listForNotAuthenticatedUser();
+        if ($user) {
+            $products = $this->listForAuthenticatedUser($user);
+        } else {//token is invalid for any reason
+            $products = $this->listForUnAuthenticatedUser();
         }
 
         return response()->json(compact('products'));
     }
 
-    public function listForNotAuthenticatedUser()
+    public function listForUnAuthenticatedUser()
     {
         if ($this->request->has('lat') && !is_null($this->request->lat)
             && $this->request->has('lng') && !is_null($this->request->lng)
@@ -56,7 +47,7 @@ class HomeController extends Controller
         return $products;
     }
 
-    public function listForAuthenticatedUser( $user)
+    public function listForAuthenticatedUser(User $user)
     {
         if (!is_null($user->latitude) && !is_null($user->longitude)) {
 
