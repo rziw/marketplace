@@ -46,7 +46,7 @@ class ShowShopController extends Controller
                 $this->request->radius);
 
         } else {
-            $products = $this->shopRepository->get($id);
+            $products = $this->shopRepository->find($id);
         }
 
         return $products;
@@ -68,7 +68,7 @@ class ShowShopController extends Controller
                 $this->request->radius);
 
         } else {
-            $products = $this->shopRepository->get($id);
+            $products = $this->shopRepository->find($id);
         }
 
         return $products;

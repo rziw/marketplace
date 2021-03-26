@@ -15,7 +15,7 @@ class ShopDataProviderService
 
     public function getShopProduct(int $shopId, int $productId)
     {
-        $shop = $this->shopRepository->findByUser($shopId);
+        $shop = $this->shopRepository->find($shopId);
         $product = $shop->products()->whereIn('product_id', [$productId])->firstOrfail();
 
         return $product;

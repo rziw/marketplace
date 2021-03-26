@@ -23,9 +23,9 @@ class ShopRepository implements Repository
         return $shop;
     }
 
-    public function get($id)
+    public function find(int $shopId)
     {
-        $shop = Shop::where('id', $id)
+        $shop = Shop::where('id', $shopId)
             ->where('status', 'accepted')
             ->with(['products' => function ($query) {
                 $query->where('product_shop.status', 'accepted');
