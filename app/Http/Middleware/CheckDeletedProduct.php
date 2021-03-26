@@ -25,7 +25,7 @@ class CheckDeletedProduct
 
     public function handle($request, Closure $next)
     {
-        $order = $this->orderRepository->get($request->order_id);
+        $order = $this->orderRepository->findByUser($request->order_id, auth('api')->user()->id);
         $request->order = $order;
 
         $removed_product_message = $this->handleOrder->permanentlyRemoveOrderProduct($order);
