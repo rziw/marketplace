@@ -82,4 +82,9 @@ class OrderRepository implements Repository
 
         return $orders;
     }
+
+    public function update(Order $order, array $input)
+    {
+        $order->update($input);
+    }
 }
