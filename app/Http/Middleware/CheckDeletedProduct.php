@@ -2,24 +2,18 @@
 
 namespace App\Http\Middleware;
 
-use App\Helpers\OrderHandler;
-use App\Repositories\OrderRepository;
 use Closure;
+use App\Repositories\OrderRepository;
+use App\Services\OrderDeletionService;
 
 class CheckDeletedProduct
 {
-    private $handleOrder;
+    private $orderDeletionService;
     private $orderRepository;
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
-     */
-    public function __construct(OrderHandler $orderHandler, OrderRepository $orderRepository)
+
+    public function __construct(OrderDeletionService $orderDeletionService, OrderRepository $orderRepository)
     {
-        $this->handleOrder = $orderHandler;
+        $this->orderDeletionService = $orderDeletionService;
         $this->orderRepository = $orderRepository;
     }
 
@@ -28,7 +22,7 @@ class CheckDeletedProduct
         $order = $this->orderRepository->findByUser($request->order_id, auth('api')->user()->id);
         $request->order = $order;
 
-        $removed_product_message = $this->handleOrder->permanentlyRemoveOrderProduct($order);
+        $removed_product_message = $this->orderDeletionService->permanentlyRemoveOrderProduct($order);
 
         if(count($removed_product_message) > 0) {
             return response()->json(['message'=> $removed_product_message]);
