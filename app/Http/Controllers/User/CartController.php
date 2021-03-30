@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Services\Order\CheckProductCountForAddingToCartGuard;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Repositories\OrderRepository;
 use App\Services\OrderDeletionService;
 use App\Services\OrderCreationService;
 use App\Http\Requests\User\CartRequest;
+use App\Services\Order\CheckProductCountForAddingToCartGuard;
 
 class CartController extends Controller
 {
