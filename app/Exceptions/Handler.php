@@ -2,10 +2,12 @@
 
 namespace App\Exceptions;
 
+use App\Classes\Response as HTTPResponse;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\CssSelector\Exception\InternalErrorException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -53,9 +55,13 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        $statusCode = $exception->getStatusCode();
+
         if ($exception instanceof ModelNotFoundException) {
             return response()->json(['error' => 'Not Found!'], 404);
         } elseif ($exception instanceof GuzzleException) {
+            return response()->json(['error' => $exception->getMessage()], $exception->getCode());
+        } elseif ($statusCode === 422) {
             return response()->json(['error' => $exception->getMessage()], $exception->getCode());
         } else {
             return response()->json(['error' => "Something went wrong, Try later", 'status' => 500], 500);
