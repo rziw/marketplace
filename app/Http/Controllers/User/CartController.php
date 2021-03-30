@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Services\Order\CheckProductCountForAddingToCartGuard;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Repositories\OrderRepository;
@@ -11,13 +12,13 @@ use App\Http\Requests\User\CartRequest;
 
 class CartController extends Controller
 {
-    public function __construct()
+    public function store(
+        CartRequest $request,
+        OrderCreationService $orderCreationService,
+        CheckProductCountForAddingToCartGuard $guard
+    ): JsonResponse
     {
-        $this->middleware('check.cart.product.count', ['only' => ['store']]);
-    }
-
-    public function store(CartRequest $request, OrderCreationService $orderCreationService): JsonResponse
-    {
+        $guard->handle($request);
         $orderCreationService->provideOrderInput();
         $orderCreationService->storeOrder($request);
 
