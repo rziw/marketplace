@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Shop;
 use App\Repositories\ShopRepository;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -46,7 +47,7 @@ class ShowShopController extends Controller
                 $this->request->radius);
 
         } else {
-            $products = $this->shopRepository->find($id);
+            $products = $this->shopRepository->findByStatus($id, Shop::STATUSES['accepted']);
         }
 
         return $products;
@@ -68,7 +69,7 @@ class ShowShopController extends Controller
                 $this->request->radius);
 
         } else {
-            $products = $this->shopRepository->find($id);
+            $products = $this->shopRepository->findByStatus($id, Shop::STATUSES['accepted']);
         }
 
         return $products;

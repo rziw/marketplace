@@ -1,11 +1,9 @@
 <?php
 
-
 namespace App\Repositories;
 
-
-use App\Interfaces\Repository;
 use App\Models\Shop;
+use App\Interfaces\Repository;
 
 class ShopRepository implements Repository
 {
@@ -23,10 +21,10 @@ class ShopRepository implements Repository
         return $shop;
     }
 
-    public function find(int $shopId)
+    public function findByStatus(int $shopId, int $statusId)
     {
         $shop = Shop::where('id', $shopId)
-            ->where('status', 'accepted')
+            ->where('status', $statusId)
             ->with(['products' => function ($query) {
                 $query->where('product_shop.status', 'accepted');
             }])->firstOrFail();
@@ -34,13 +32,18 @@ class ShopRepository implements Repository
         return $shop;
     }
 
-    public function getWithoutRelation($id)
+    public function find(int $shopId)
     {
-        return Shop::findOrFail($id);
+        return Shop::findOrFail($shopId);
     }
 
     public function list()
     {
         // TODO: Implement list() method.
+    }
+
+    public function findByUser(int $orderId, int $userId)
+    {
+        // TODO: Implement findByUser() method.
     }
 }
