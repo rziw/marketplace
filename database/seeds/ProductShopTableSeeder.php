@@ -14,11 +14,13 @@ class ProductShopTableSeeder extends Seeder
     {
         $shop = Shop::find(1);
 
-        $shop->products()->attach([1 => [
-            'count' => 100,
-            'price' => 100,
-            'color' => 'blue',
-            'has_guarantee' => 1
-        ]]);
+        $shop->products()->attach([1 =>
+            [
+                'count' => 100,
+                'price' => 100,
+                'color' => 'blue',
+                'has_guarantee' => 1
+            ]
+        ]);
     }
 }
