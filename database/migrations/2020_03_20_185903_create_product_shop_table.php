@@ -25,7 +25,7 @@ class CreateProductShopTable extends Migration
             $table->boolean('has_guarantee')->default(1);
             $table->string('guarantee_description')->nullable();
             $table->text('extra_description')->nullable();
-            $table->string('status')->default('waiting');//TODO add enum class for it.statuses are waiting or accepted
+            $table->string('status')->default('waiting');
 
             $table->timestamps();
 

@@ -8,7 +8,7 @@ class Shop extends Model
 {
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
-    const STATUSES = ['accepted' => 0];
+    const STATUSES = ['accepted' => 0, 'waiting' => 1];
 
     public function user()
     {
