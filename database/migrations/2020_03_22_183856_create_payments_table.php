@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreatePaymentsTable extends Migration
 {
@@ -23,8 +23,7 @@ class CreatePaymentsTable extends Migration
             $table->timestamps();
 
             //relation
-            $table->foreign('order_id')->references('id')->on('orders')
-                ->onUpdate('cascade');
+            $table->foreign('order_id')->references('id')->on('orders');
         });
     }
 

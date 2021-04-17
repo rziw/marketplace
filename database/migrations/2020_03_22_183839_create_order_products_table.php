@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateOrderProductsTable extends Migration
 {
@@ -27,14 +27,9 @@ class CreateOrderProductsTable extends Migration
             $table->timestamps();
 
             //relations
-            $table->foreign('order_id')->references('id')->on('orders')
-                ->onDelete('cascade')->onUpdate('cascade');
-
-            $table->foreign('product_id')->references('id')->on('products')
-                ->onDelete('cascade')->onUpdate('cascade');
-
-            $table->foreign('shop_id')->references('id')->on('shops')
-                ->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('order_id')->references('id')->on('orders');
+            $table->foreign('product_id')->references('id')->on('products');
+            $table->foreign('shop_id')->references('id')->on('shops');
         });
     }
 

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateProductShopTable extends Migration
 {
@@ -30,11 +30,8 @@ class CreateProductShopTable extends Migration
             $table->timestamps();
 
             //relations
-            $table->foreign('shop_id')->references('id')->on('shops')
-                ->onDelete('cascade')->onUpdate('cascade');
-
-            $table->foreign('product_id')->references('id')->on('products')
-                ->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('shop_id')->references('id')->on('shops');
+            $table->foreign('product_id')->references('id')->on('products');
         });
     }
 
@@ -45,8 +42,6 @@ class CreateProductShopTable extends Migration
      */
     public function down()
     {
-        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('product_shop');
-        Schema::enableForeignKeyConstraints();
     }
 }

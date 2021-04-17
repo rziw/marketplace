@@ -1,9 +1,9 @@
 <?php
 
 use App\Enums\OrderStatus;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateOrdersTable extends Migration
 {
@@ -22,8 +22,7 @@ class CreateOrdersTable extends Migration
             $table->timestamps();
 
             //relations
-            $table->foreign('user_id')->references('id')->on('users')
-                ->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -34,8 +33,6 @@ class CreateOrdersTable extends Migration
      */
     public function down()
     {
-        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('orders');
-        Schema::enableForeignKeyConstraints();
     }
 }

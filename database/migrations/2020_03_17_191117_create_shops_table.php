@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateShopsTable extends Migration
 {
@@ -18,7 +18,7 @@ class CreateShopsTable extends Migration
             $table->string('name')->nullable();
             $table->string('sheba_number')->nullable();
             $table->string('product_type')->nullable();
-            $table->string('status')->default('waiting');//statuses are waiting and accepted
+            $table->string('status')->default('waiting');//TODO:: define in related model:statuses are waiting and accepted
             $table->text('address')->nullable();
             $table->text('province')->nullable();
             $table->text('city')->nullable();
@@ -29,8 +29,7 @@ class CreateShopsTable extends Migration
             $table->timestamps();
 
             //relations
-            $table->foreign('owner_id')->references('id')->on('users')
-                ->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('owner_id')->references('id')->on('users');
         });
     }
 
@@ -41,8 +40,6 @@ class CreateShopsTable extends Migration
      */
     public function down()
     {
-        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('shops');
-        Schema::enableForeignKeyConstraints();
     }
 }
